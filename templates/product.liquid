@@ -19,8 +19,6 @@
   {% endcomment %}
   {% assign current_variant = product.selected_or_first_available_variant %}
 
-  {% include 'breadcrumb' %}
-
   <div class="grid product-single">
     <div class="grid__item large--one-half text-center">
       <div class="product-single__photos" id="ProductPhoto">
@@ -141,6 +139,13 @@
   </div>
 
 </div>
+
+<!-- Tags -->
+{% for tag in product.tags %}
+    {% include tag %}
+{% endfor %}
+
+{% include 'about-small' %}
 
 {% comment %}
   To take advantage of a callback on the select dropdown, add option_selection.js

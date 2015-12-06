@@ -1,7 +1,28 @@
+html, body{height:100%;}
+
+// Utilities
 .relative{position: relative;}
 .absolute{position: absolute;}
+.fw800{font-weight:800;}
 
-.test-area {
+//Typography
+.no-outline{outline: none;}
+.no-hover{text-decoration: none !important;}
+
+// Components
+.divider{
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+    margin: 20px 0 25px 1px;
+    border-bottom: 5px solid;
+    .dark{ border-color: #333 }
+    .light{ border-color: #fff }
+}
+
+
+
+.test-area{
     position: absolute;
     top: 0;
     right: 0;
@@ -9,6 +30,21 @@
     left: 0;
     overflow: hidden;
 }
+.cart-loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    background-color:rgba(0,0,0,0.6);
+    text-align: center;
+    img{
+        max-height: 100%;
+        transform: scale(0);
+    }
+}
+
 
 .ball {
     background: #ff2420;

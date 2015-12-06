@@ -306,11 +306,14 @@
     <!-- //site-footer -->
   </div>
 
+  {% include 'add-to-cart' %}
+
   {{ 'fastclick.min.js' | asset_url | script_tag }}
   {{ 'timber.js' | asset_url | script_tag }}
   {{ 'bootstrap.min.js' | asset_url | script_tag }}
   {{ 'popmotion.global.min.js' | asset_url | script_tag }}
   {{ 'supply.js' | asset_url | script_tag }}
+  {{ 'cart.js' | asset_url | script_tag }}
 
 
   {% comment %}
@@ -351,10 +354,36 @@
       });
 
       jQuery('body').on('ajaxCart.afterCartLoad', function(evt, cart) {
-        // Bind to 'ajaxCart.afterCartLoad' to run any javascript after the cart has loaded in the DOM
+        if(jQuery('body').hasClass('js-drawer-open')==false){
 
-        //Supply Animation after load.
-        timber.RightDrawer.open();
+        // Bind to 'ajaxCart.afterCartLoad' to run any javascript after the cart has loaded in the DOM
+        var circle = new ui.Actor({
+            element: '.cart-loader img',
+        });
+        var springOpen = new ui.Simulate({
+            values: {
+                scale: {
+                    simulate: 'spring',
+                    start: 0,
+                    to: 1,
+                    spring: 600,
+                    stopSpeed: 0,
+                    friction: .3
+                }
+            },
+            onStart: function(){
+                $('.cart-loader').show();
+            },
+            onComplete: function(){
+                $('.cart-loader').hide();
+                //Supply Animation after load.
+                timber.RightDrawer.open();
+            }
+        });
+
+        circle.start(springOpen);
+
+    }
       });
     </script>
   {% endif %}
