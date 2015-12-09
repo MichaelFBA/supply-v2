@@ -148,7 +148,7 @@ $headerFontStack: 'Source Sans Pro','HelveticaNeue', 'Helvetica Neue', Helvetica
 $headerFontWeight: 700;
 
 $bodyFontStack: 'Source Sans Pro', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$baseFontSize: 14px; // Henseforth known as 1em
+$baseFontSize: 16px; // Henseforth known as 1em
 
 @font-face {
   font-family: 'icons';
@@ -856,10 +856,6 @@ b, strong {
   font-weight: bold;
 }
 
-small {
-  font-size: 0.9em;
-}
-
 sup, sub {
   position: relative;
   font-size: 60%;
@@ -926,6 +922,7 @@ hr {
 
   &.hr--small {
     margin: ($gutter / 2) 0;
+    max-width: 100px;
   }
 
   &.hr--clear {

@@ -1,13 +1,56 @@
 html, body{height:100%;}
 
+//color
+.white-bg{background-color:#fff; }
+
 // Utilities
 .relative{position: relative;}
 .absolute{position: absolute;}
 .fw800{font-weight:800;}
+.h100{height:100%;}
+.cover{background-size: cover; background-position: center center;}
+.block{display: block;}
+.inline-block{display: inline-block;}
 
 //Typography
 .no-outline{outline: none;}
 .no-hover{text-decoration: none !important;}
+
+//Nav
+.site-header{z-index: 10;}
+
+//Footer
+footer{
+    font-size:14px;
+    hr{border-color:#B2B2B2;}
+}
+
+//Logo
+#supply-logo{
+    width: 60px;
+    height: 110px;
+}
+.dot{
+    border-radius: 50%;
+    position: absolute;
+    width: 13px;
+    height: 13px;
+
+    &.fill{background-color: #000000}
+    &.outline{border:2px solid #000000}
+}
+
+//Pages
+#about-header{
+    margin-top: -270px;
+}
+.circle{
+    background: #000000;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+}
+
 
 // Components
 .divider{
@@ -19,8 +62,6 @@ html, body{height:100%;}
     .dark{ border-color: #333 }
     .light{ border-color: #fff }
 }
-
-
 
 .test-area{
     position: absolute;

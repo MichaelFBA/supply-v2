@@ -28,6 +28,7 @@
   <meta name="theme-color" content="{{ settings.color_primary }}">
 
   <!-- CSS ================================================== -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
   {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
   {{ 'supply.scss.css' | asset_url | stylesheet_tag }}
@@ -58,7 +59,7 @@
     <div class="drawer__header">
       <div class="drawer__title h3">{{ 'layout.drawers.browse' | t }}</div>
       <div class="drawer__close js-drawer-close">
-        <button type="button" class="icon-fallback-text">
+        <button type="button" class="icon-fallback-text no-outline">
           <span class="icon icon-x" aria-hidden="true"></span>
           <span class="fallback-text">{{ 'layout.drawers.close_menu' | t }}</span>
         </button>
@@ -141,7 +142,7 @@
     <div class="drawer__header">
       <div class="drawer__title h3">{{ 'cart.general.title' | t }}</div>
       <div class="drawer__close js-drawer-close">
-        <button type="button" class="icon-fallback-text">
+        <button type="button" class="icon-fallback-text no-outline">
           <span class="icon icon-x" aria-hidden="true"></span>
           <span class="fallback-text">{{ 'cart.general.close_cart' | t | json }}</span>
         </button>
@@ -169,7 +170,8 @@
                   <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
                 </a>
               {% else %}
-                <a href="/" itemprop="url">{{ shop.name }}</a>
+
+                <a href="/" itemprop="url">{% include 'logo' %}</a>
               {% endif %}
             {% if template == 'index' %}
               </h1>
@@ -187,10 +189,10 @@
                 - Documentation:  http://shopify.com/timber#ajax-cart
             {% endcomment %}
             <div>
-                <a href="/pages/about-us" class="site-header__cart-toggle" aria-controls="About Us" aria-expanded="false">
+                <a href="/pages/about-us" class="site-header__cart-toggle no-hover m-r" aria-controls="About Us" aria-expanded="false">
                   About Supply
                 </a>
-              <a href="/cart" class="site-header__cart-toggle js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
+              <a href="/cart" class="site-header__cart-toggle js-drawer-open-right no-hover" aria-controls="CartDrawer" aria-expanded="false">
                 <span class="icon icon-cart" aria-hidden="true"></span>
               </a>
             </div>
@@ -229,92 +231,19 @@
 
     </main>
 
-    <!-- begin site-footer -->
-    <footer class="site-footer small--text-center" role="contentinfo">
-      <div class="wrapper">
-        <div class="grid">
-          {% if settings.footer_social_enable %}
-            <div class="grid__item large--one-third medium--one-half">
-              <h3>{{ 'layout.footer.social_title' | t }}</h3>
-                <ul class="inline-list social-icons">
-                  {% if settings.social_twitter_link != blank %}
-                    <li>
-                      <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ shop.name }} on Twitter">
-                        <span class="icon icon-twitter" aria-hidden="true"></span>
-                        <span class="fallback-text">Twitter</span>
-                      </a>
-                    </li>
-                  {% endif %}
-                  {% if settings.social_facebook_link != blank %}
-                    <li>
-                      <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ shop.name }} on Facebook">
-                        <span class="icon icon-facebook" aria-hidden="true"></span>
-                        <span class="fallback-text">Facebook</span>
-                      </a>
-                    </li>
-                  {% endif %}
-                </ul>
-            </div>
-          {% endif %}
-          {% if settings.footer_newsletter_enable %}
-            <div class="grid__item large--one-third push--large--one-third medium--one-half">
-              {% comment %}
-                MailChimp is the go-to newsletter service for Shopify.
-                Use the link below to find your MailChimp form action
-                and insert it in your site settings.
+    {% include 'footer' %}
 
-                MailChimp newsletter integration and requirement:
-                 - http://docs.shopify.com/support/configuration/store-customization/where-do-i-get-my-mailchimp-form-action
-              {% endcomment %}
-              <h3>{{ 'layout.footer.newsletter_title' | t }}</h3>
-              {% if settings.newsletter_form_action != blank %}
-                {% assign form_action = settings.newsletter_form_action %}
-              {% else %}
-                {% assign form_action = '#' %}
-              {% endif %}
-              <form action="{{ form_action }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" class="input-group">
-                <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="mail" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
-                <span class="input-group-btn">
-                  <input type="submit" class="btn" name="subscribe" id="subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
-                </span>
-              </form>
-            </div>
-          {% endif %}
-          <div class="grid__item text-center">
-
-            {% comment %}
-              Loop through available payment methods and show their icons.
-            {% endcomment %}
-            {% unless shop.enabled_payment_types == empty %}
-            <hr>
-              <h4 class="text-center">{{ 'layout.footer.accepted_payments' | t }}</h4>
-              <ul class="inline-list payment-icons">
-                {% for type in shop.enabled_payment_types %}
-                  <li>
-                    <span class="icon-fallback-text">
-                      <span class="icon icon-{{type}}" aria-hidden="true"></span>
-                      <span class="fallback-text">{{ type | replace: '_',' '}}</span>
-                    </span>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endunless %}
-          </div>
-        </div>
-      </div>
-    </footer>
-    <!-- //site-footer -->
   </div>
 
   {% include 'add-to-cart' %}
 
   {{ 'fastclick.min.js' | asset_url | script_tag }}
   {{ 'timber.js' | asset_url | script_tag }}
+  {{ 'tether.min.js' | asset_url | script_tag }}
   {{ 'bootstrap.min.js' | asset_url | script_tag }}
   {{ 'popmotion.global.min.js' | asset_url | script_tag }}
+  {{ 'jquery.backstretch.min.js' | asset_url | script_tag }}
   {{ 'supply.js' | asset_url | script_tag }}
-  {{ 'cart.js' | asset_url | script_tag }}
-
 
   {% comment %}
     Template-specific js
@@ -365,7 +294,7 @@
                 scale: {
                     simulate: 'spring',
                     start: 0,
-                    to: 1,
+                    to: 1.7,
                     spring: 600,
                     stopSpeed: 0,
                     friction: .3

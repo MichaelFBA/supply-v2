@@ -1,0 +1,122 @@
+<section id="supply-logo">
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot outline"></div>
+
+    <div class="dot outline"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot outline"></div>
+
+    <div class="dot outline"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+    <div class="dot fill"></div>
+</section>
+
+<script>
+$( document ).ready(function() {
+
+    function getRandom(a,b){
+        return Math.floor(Math.random() * b) + a
+    }
+
+    function setPosition(){
+        var pos = [];
+        var w = $('#supply-logo').width();
+        var h = $('#supply-logo').height();
+        //width
+        for(var i = 1; i < 6; i++ ){
+            //height
+            for(var j = 1; j < 4; j++ ){
+                pos.push({
+                    x : j * (w / 3) - (w / 3),
+                    y : i * (h / 5) - (h / 5)
+                })
+            }
+        }
+        return pos;
+    }
+
+    var positions = setPosition()
+    var w = $('#supply-logo').width();
+    var h = $('#supply-logo').height();
+
+    var balls = ui.select('.dot');
+    balls.each(function(ball) {
+      ball.set({
+        values: {
+          originX: 0,
+          originY: 0,
+          x: w / 2 - 7.5,
+          y: h / 2 - 7.5
+        }
+      })
+    })
+
+    var count = 0;
+    var move = new ui.Tween({
+        duration: 100,
+        ease: 'backOut',
+        values: {
+            x: function (item) {
+                return positions[count].x
+            },
+            y: function (item) {
+                return positions[count].y
+            },
+        },
+        onComplete: function (actor) {
+            count++;
+            console.log('completed')
+        }
+    });
+
+    balls.stagger(move, 200);
+
+    var $body = $('body');
+
+    var trackBall = new ui.Track({
+      values: {
+        x: {},
+        y: {}
+      }
+    });
+
+    $body.on('mousedown touchstart', '.dot', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      currentIndex = $(this).index();
+      activeBall = ui.select(this);
+
+      activeBall.start(trackBall.extend({
+        smooth: 30
+      }), event);
+
+      $body.on('mouseup touchend', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        // activeBall.start(springBack);
+        activeBall.start(new ui.Simulate({
+          simulate: 'spring',
+          spring: 500,
+          friction: 0.2,
+          values: {
+            x: {
+              to: positions[currentIndex].x
+            },
+            y: {
+              to: positions[currentIndex].y
+            }
+          }
+        }))
+
+      });
+    });
+});
+</script>

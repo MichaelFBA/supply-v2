@@ -1,0 +1,54 @@
+<footer>
+    <div class="container text-muted p-y">
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">
+                <hr class="hr--small">
+                <h6 class="m-b-md">ABOUT</h6>
+
+                © {{ 'now' | date: "%Y" }} Supply</br>
+                Licensed under a Creative Commons License.
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <hr class="hr--small">
+                <h6 class="m-b-md">SECTIONS</h6>
+
+                <a class="block" href="/pages/about-us">About</a>
+                <a class="block" href="/pages/impressum">Impressum / Contact</a>
+                <a class="block" href="/pages/returns">Returns</a>
+                <a class="block" href="/pages/terms">Terms</a>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <hr class="hr--small">
+                <h6 class="m-b-md">FOLLOW</h6>
+
+
+                <a class="block" data-toggle="modal" data-target="#subscribeModal">Subscribe to our newsletter</a>
+                <a class="block" target="_blank" href="https://www.facebook.com/trysupply">Facebook</a>
+                <a class="block" target="_blank" href="https://instagram.com/trysupply/">Instagram</a>
+                <a class="block" target="_blank" href="https://www.pinterest.com/trysupply/">Pinterest</a>
+                <a class="block" target="_blank" href="https://twitter.com/TrySupply">Twitter</a>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <hr class="hr--small">
+                <h6 class="m-b-md">WHAT WE BELIEVE</h6>
+
+                Making and consuming things is how this whole crazy beauHful parade we call life works.
+                At Supply we believe that if it’s made good it feels good too.
+                {% comment %} Loop through available payment methods and show their icons. {% endcomment %} {% unless shop.enabled_payment_types == empty %}
+                <hr>
+                <h4 class="text-center">{{ 'layout.footer.accepted_payments' | t }}</h4>
+                <ul class="inline-list payment-icons">
+                    {% for type in shop.enabled_payment_types %}
+                    <li>
+                        <span class="icon-fallback-text">
+                            <span class="icon icon-{{type}}" aria-hidden="true"></span>
+                            <span class="fallback-text">{{ type | replace: '_',' '}}</span>
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endunless %}
+            </div>
+        </div>
+    </div>
+</footer>
