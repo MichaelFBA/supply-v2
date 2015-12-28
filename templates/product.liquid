@@ -19,6 +19,34 @@
   {% endcomment %}
   {% assign current_variant = product.selected_or_first_available_variant %}
 
+  <section id="MainProduct" class="h100">
+      {% comment %} Product Name {% endcomment %}
+      <div class="uiCircle productName" data-radius="62.5">
+          <h1 itemprop="name" class="vAlign">{{ product.title }}</h1>
+      </div>
+
+      {% comment %} Product Price {% endcomment %}
+      <div class="uiCircle productPrice" data-radius="62.5">
+          <h1 itemprop="price" class="vAlign">{{ current_variant.price | money }}</h1>
+      </div>
+
+      {% comment %} Product Images {% endcomment %}
+      {% for image in product.images %}
+        <div class="uiCircle productImage cover" data-radius="37.5" data-img="{{ image.src | img_url: '2048x2048' }}" style="background-image:url({{ image.src | img_url: 'compact' }})"></div>
+      {% endfor %}
+
+      {% comment %} Product options {% endcomment %}
+      {% for option in product.options %}
+        <div class="uiCircle" data-radius="37.5"><h3 class="vAlign text-center">{{option}}</h3></div>
+      {% endfor %}
+
+      {% comment %} Product Info {% endcomment %}
+      <div class="uiCircle" data-radius="37.5"><h3 class="vAlign text-center">Info</h3></div>
+
+      {% comment %} Product Add to Cart {% endcomment %}
+      <div class="uiCircle" data-radius="37.5"><h3 class="vAlign text-center">Buy</h3></div>
+  </section>
+
   <div class="grid product-single">
     <div class="grid__item large--one-half text-center">
       <div class="product-single__photos" id="ProductPhoto">
@@ -179,6 +207,8 @@
       enableHistoryState: true
     });
 
+    console.log('product', {{ product | json }});
+
     // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
     {% if product.options.size == 1 and product.options.first != 'Title' %}
       $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}</label>');
@@ -189,4 +219,136 @@
       $('.selector-wrapper').hide();
     {% endif %}
   });
+
+  //Product Balls
+  $(document).ready(function(){
+
+  var width = $('#MainProduct').width(),
+    height = $('body').height(),
+    padding = 5, // separation between nodes
+    maxRadius = 30;
+
+  var nodes = [];
+
+  var circleRef = d3.selectAll(".uiCircle")[0];
+  var n =  d3.selectAll(".uiCircle")[0].length, // total number of nodes
+      m = 1; // number of distinct clusters
+
+  var pos = {x: width - 200, y: height / 2}
+
+  var xPos = d3.scale.ordinal()
+    .domain(d3.range(m))
+    .rangePoints([width, width], 1);
+
+  var x =
+    d3.scale.linear()
+    .domain([0, width])
+    .range([0, width]);
+
+  var y =
+    d3.scale.linear()
+    .domain([0, height])
+    .range([0, height]);
+
+  nodes = d3.range(n).map(function(key) {
+    var i = Math.floor(Math.random() * m),
+        v = (i + 1) / m * -Math.log(Math.random()),
+        r = $(circleRef[key]).data('radius');
+
+    return {
+      radius: r,
+      cx: xPos(i),
+      cx: pos.x,
+      cy: pos.y
+    };
+  });
+
+  console.log('nodes', nodes)
+
+  var root = nodes[0];
+  root.fixed = true;
+  root.x = pos.x;
+  root.y = pos.y;
+
+  var force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height])
+    .gravity(0)
+    .charge(0)
+    .on("tick", tick)
+    .start();
+
+  var $body = d3.select("#MainProduct")
+    .append("div")
+    .attr('style', function(d) {
+      return 'width: ' + width + 'px; height: ' + height + 'px;';
+    });
+
+  var $div = d3.selectAll(".uiCircle")
+    .data(nodes)
+    //.enter()
+    // .append("div").attr('class', 'absolute img-circle bg-white ball')
+    // .attr('style', function(d) {
+    //   return 'width: ' + (d.radius * 2) + 'px; height: ' + (d.radius * 2) + 'px; margin-left: -' + d.radius + 'px; margin-top: -' + d.radius + 'px;';
+    // })
+    .call(force.drag);
+
+  function tick(e) {
+    $div
+      .each(gravity(.2 * e.alpha))
+      .each(collide(.5))
+      .style('left', function(d) {
+        d.x = x(Math.max(d.radius, Math.min(width - d.radius, d.x)))
+        return d.x  + 'px';
+      })
+      .style('top', function(d) {
+        d.y=y(Math.max(d.radius, Math.min(height - d.radius, d.y)));
+        return d.y + "px"
+      });
+  }
+
+   // Move nodes toward cluster focus.
+  function gravity(alpha) {
+    return function(d) {
+      d.y += (d.cy - d.y) * alpha;
+      d.x += (d.cx - d.x) * alpha;
+    };
+  }
+
+   // Resolve collisions between nodes.
+  function collide(alpha) {
+    var quadtree = d3.geom.quadtree(nodes);
+    return function(d) {
+      var r = d.radius + maxRadius + padding,
+        nx1 = d.x - r,
+        nx2 = d.x + r,
+        ny1 = d.y - r,
+        ny2 = d.y + r;
+      quadtree.visit(function(quad, x1, y1, x2, y2) {
+        if (quad.point && (quad.point !== d)) {
+          var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + quad.point.radius + padding;
+          if (l < r) {
+            l = (l - r) / l * alpha;
+            d.x -= x *= l;
+            d.y -= y *= l;
+            quad.point.x += x;
+            quad.point.y += y;
+          }
+        }
+        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+      });
+    };
+  }
+
+  //Product Images
+  $('.productImage').on('click', function(){
+      var imgUrl = $(this).data('img');
+      console.log(imgUrl)
+      $('#MainProduct').backstretch(imgUrl, { fade: 4000 });
+  })
+
+})
 </script>

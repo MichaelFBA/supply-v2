@@ -1,7 +1,10 @@
-<div class="embed-responsive embed-responsive-16by9">
-    <iframe src="https://player.vimeo.com/video/134132784?autoplay=0&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://player.vimeo.com/video/134132784?autoplay=0&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
 </div>
-
 <!-- /templates/index.liquid -->
 {% comment %}
 
@@ -16,13 +19,12 @@
   Use class grid-uniform to have evenly sized columns clear
   each other properly at each breakpoint.
 {% endcomment %}
-<div class="grid-uniform m-a-0">
-
+<div class="row h100">
   {% comment %}
     Loop through products in your Frontpage collection.
     This collection is created by default, but you must add products to it.
   {% endcomment %}
-  {% for product in collections.frontpage.products limit:15 %}
+  {% for product in collections.frontpage.products limit:4 %}
 
     {% comment %}
       Change the grid item width by using classes from the grid in
@@ -31,9 +33,8 @@
       Example:
         - {% assign grid_item_width = 'large--one-third medium--one-half' %}
     {% endcomment %}
-    {% assign grid_item_width = 'large--one-half medium--one-half p-a-0' %}
+    {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
     {% include 'product-grid-item' %}
 
   {% endfor %}
-
 </div>

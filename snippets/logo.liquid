@@ -1,122 +1,226 @@
-<section id="supply-logo">
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot outline"></div>
-
-    <div class="dot outline"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot outline"></div>
-
-    <div class="dot outline"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-    <div class="dot fill"></div>
-</section>
+<section id="supply-logo"></section>
 
 <script>
 $( document ).ready(function() {
+    var $container = $('#supply-logo');
+        var width = $container.width(),
+          height = $container.height(),
+          padding = 0, // separation between nodes
+          maxRadius = 12;
 
-    function getRandom(a,b){
-        return Math.floor(Math.random() * b) + a
-    }
+        var color = "#333333";
 
-    function setPosition(){
-        var pos = [];
-        var w = $('#supply-logo').width();
-        var h = $('#supply-logo').height();
-        //width
-        for(var i = 1; i < 6; i++ ){
-            //height
-            for(var j = 1; j < 4; j++ ){
-                pos.push({
-                    x : j * (w / 3) - (w / 3),
-                    y : i * (h / 5) - (h / 5)
-                })
-            }
-        }
-        return pos;
-    }
+        var letters = [4, 5, 9, 10];
 
-    var positions = setPosition()
-    var w = $('#supply-logo').width();
-    var h = $('#supply-logo').height();
+        var n = 16, // total number of nodes
+          m = 15; // number of distinct clusters
 
-    var balls = ui.select('.dot');
-    balls.each(function(ball) {
-      ball.set({
-        values: {
-          originX: 0,
-          originY: 0,
-          x: w / 2 - 7.5,
-          y: h / 2 - 7.5
-        }
-      })
-    })
+        var center = width / 2;
+        var dist = 20;
 
-    var count = 0;
-    var move = new ui.Tween({
-        duration: 100,
-        ease: 'backOut',
-        values: {
-            x: function (item) {
-                return positions[count].x
-            },
-            y: function (item) {
-                return positions[count].y
-            },
-        },
-        onComplete: function (actor) {
-            count++;
-            console.log('completed')
-        }
-    });
+        var supplyPos = [
+          {
+            outline: false,
+            x: center - dist,
+            y: 20
+          }, {
+            outline: false,
+            x: center,
+            y: 20
+          }, {
+            outline: false,
+            x: center + dist,
+            y: 20
+          },
+          {
+            outline: false,
+            x: center - dist,
+            y: 40
+          }, {
+            outline: true,
+            x: center,
+            y: 40
+          }, {
+            outline: true,
+            x: center + dist,
+            y: 40
+          },
+          {
+            outline: false,
+            x: center - dist,
+            y: 60
+          }, {
+            outline: false,
+            x: center,
+            y: 60
+          }, {
+            outline: false,
+            x: center + dist,
+            y: 60
+          },
+          {
+            outline: true,
+            x: center - dist,
+            y: 80
+          }, {
+            outline: true,
+            x: center,
+            y: 80
+          }, {
+            outline: false,
+            x: center + dist,
+            y: 80
+          },
+          {
+            outline: false,
+            x: center - dist,
+            y: 100
+          }, {
+            outline: false,
+            x: center,
+            y: 100
+          }, {
+            outline: false,
+            x: center + dist,
+            y: 100
+          },
+          {
+            outline: false,
+            x: 1000,
+            y: 1000
+          },
+        ]
 
-    balls.stagger(move, 200);
+        var x = d3.scale.ordinal()
+          .domain(d3.range(m))
+          .rangePoints([0, width], 1);
 
-    var $body = $('body');
-
-    var trackBall = new ui.Track({
-      values: {
-        x: {},
-        y: {}
-      }
-    });
-
-    $body.on('mousedown touchstart', '.dot', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      currentIndex = $(this).index();
-      activeBall = ui.select(this);
-
-      activeBall.start(trackBall.extend({
-        smooth: 30
-      }), event);
-
-      $body.on('mouseup touchend', function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        // activeBall.start(springBack);
-        activeBall.start(new ui.Simulate({
-          simulate: 'spring',
-          spring: 500,
-          friction: 0.2,
-          values: {
-            x: {
-              to: positions[currentIndex].x
-            },
-            y: {
-              to: positions[currentIndex].y
-            }
+        var nodes = d3.range(n).map(function(index) {
+          var radius = 7;
+          if (supplyPos[index].outline) {
+            radius = 6;
           }
-        }))
+          return {
+            outline: supplyPos[index].outline,
+            radius: radius,
+            color: color,
+            cx: supplyPos[index].x,
+            cy: supplyPos[index].y,
+            x: supplyPos[index].x,
+            y: supplyPos[index].y,
+          };
+        });
 
-      });
-    });
-});
+        var root = nodes[15];
+        root.radius = 20;
+        root.fixed = true;
+        root.color = "none";
+
+
+        var force = d3.layout.force()
+          .nodes(nodes)
+          .size([width, height])
+          .gravity(0)
+          .charge(0)
+          .on("tick", tick)
+          .start();
+
+        var svg = d3.select('#supply-logo').append("svg")
+          .attr("width", '100%')
+          .attr("height", '100%')
+          // .attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
+          // .attr('preserveAspectRatio','xMinYMin')
+
+        var circle = svg.selectAll("circle")
+          .data(nodes)
+          .enter().append("circle")
+          .attr("r", function(d) {
+            return d.radius;
+          })
+          .style("fill", function(d) {
+            if (!d.outline) {
+              return d.color;
+            } else {
+              return "transparent"
+            }
+          })
+          .style("stroke", function(d) {
+            if (d.outline) {
+              return d.color;
+            }
+          })
+          .style("stroke-width", function(d) {
+            if (d.outline) {
+              return "2px";
+            }
+          })
+          .call(force.drag);
+
+        function tick(e) {
+          circle
+            .each(gravity(.2 * e.alpha))
+            .each(collide(.5))
+            .attr("cx", function(d) {
+              return Math.max(d.radius, Math.min(width - d.radius, d.x))
+            })
+            .attr("cy", function(d) {
+              return Math.max(d.radius, Math.min(height - d.radius, d.y))
+            });
+        }
+
+        svg.on("mousemove", function() {
+          var p1 = d3.mouse(this);
+          root.px = p1[0];
+          root.py = p1[1];
+          force.resume();
+        });
+
+        // d3.select("body")
+        //     .on("mousedown", mousedown)
+        //     .on("touchstart", mousedown);
+
+        function mousedown() {
+          nodes.forEach(function(o, i) {
+            o.x += (Math.random() - .5) * 40;
+            o.y += (Math.random() - .5) * 40;
+          });
+          force.resume();
+        }
+
+        // Move nodes toward cluster focus.
+        function gravity(alpha) {
+          return function(d) {
+            d.y += (d.cy - d.y) * alpha;
+            d.x += (d.cx - d.x) * alpha;
+          };
+        }
+
+        // Resolve collisions between nodes.
+        function collide(alpha) {
+          var quadtree = d3.geom.quadtree(nodes);
+          return function(d) {
+            var r = d.radius + maxRadius + padding,
+              nx1 = d.x - r,
+              nx2 = d.x + r,
+              ny1 = d.y - r,
+              ny2 = d.y + r;
+            quadtree.visit(function(quad, x1, y1, x2, y2) {
+              if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                  y = d.y - quad.point.y,
+                  l = Math.sqrt(x * x + y * y),
+                  r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                if (l < r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  quad.point.x += x;
+                  quad.point.y += y;
+                }
+              }
+              return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+          };
+        }
+    })
 </script>

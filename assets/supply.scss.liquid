@@ -1,4 +1,9 @@
-html, body{height:100%;}
+html, body{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+body{background-color: transparent;}
 
 //color
 .white-bg{background-color:#fff; }
@@ -11,6 +16,12 @@ html, body{height:100%;}
 .cover{background-size: cover; background-position: center center;}
 .block{display: block;}
 .inline-block{display: inline-block;}
+
+.vAlign {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 //Typography
 .no-outline{outline: none;}
@@ -26,9 +37,14 @@ footer{
 }
 
 //Logo
+.site-header__logo{
+    position: absolute;
+    z-index: 9999;
+}
 #supply-logo{
-    width: 60px;
-    height: 110px;
+    width: 90px;
+    height:130px;
+    position: absolute;
 }
 .dot{
     border-radius: 50%;
@@ -49,8 +65,10 @@ footer{
     border-radius: 50%;
     text-align: center;
     color: white;
+    position: absolute;
+    &.small{width:150px;height:150px;}
+    &.large{width:300px;height:300px;}
 }
-
 
 // Components
 .divider{
@@ -70,6 +88,12 @@ footer{
     bottom: 0;
     left: 0;
     overflow: hidden;
+    &.perspective{
+        -moz-perspective: 500;
+        -webkit-perspective: 500;
+        perspective: 500;
+        transform-style: preserve-3d;
+    }
 }
 .cart-loader {
     position: absolute;
@@ -86,9 +110,8 @@ footer{
     }
 }
 
-
 .ball {
-    background: #ff2420;
+    background: #000000;
     border-radius: 50%;
     position: absolute;
     width: 100px;
@@ -101,8 +124,18 @@ footer{
     color: white;
 }
 
-.vAlign {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+//Product
+.uiCircle{
+    border-radius:50%;
+    position: absolute;
+    background-color: #333333;
+    color: #ffffff;
+    width: 75px;
+    height:75px;
+    margin-left: -37.5px;
+    margin-top: -37.5px;
+
+    &.productName{width: 125px; height:125px; margin-left: -62.5px; margin-top: -62.5px; text-align: center; h1{font-size: 18px;}}
+    &.productPrice{width: 125px; height:125px; margin-left: -62.5px; margin-top: -62.5px; text-align: center;}
+    &.productImage{ border: 3px solid #333333;background-color: whitesmoke;}
 }

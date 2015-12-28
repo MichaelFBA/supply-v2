@@ -55,6 +55,7 @@
 {% endcomment %}
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
 
+ {% include 'modal-subscribe' %}
   <div id="NavDrawer" class="drawer drawer--left">
     <div class="drawer__header">
       <div class="drawer__title h3">{{ 'layout.drawers.browse' | t }}</div>
@@ -150,34 +151,29 @@
     </div>
     <div id="CartContainer"></div>
   </div>
-  <div id="PageContainer" class="is-moved-by-drawer">
+  <div id="PageContainer" class="is-moved-by-drawer h100 container-fluid p-a-0 m-a-0">
+      {% comment %}
+        Use the uploaded logo from theme settings if enabled.
+        Site name gets precedence with H1 tag on homepage, div on other pages.
+      {% endcomment %}
+      {% if template == 'index' %}
+        <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
+      {% else %}
+        <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
+      {% endif %}
+        <a href="/" itemprop="url" title="{{ shop.name }}">{% include 'logo' %}</a>
+      {% if template == 'index' %}
+        </h1>
+      {% else %}
+        </div>
+      {% endif %}
+
     <header class="site-header" role="banner">
       <div class="wrapper">
 
         <div class="grid--full grid--table">
           <div class="grid__item large--one-half">
-            {% comment %}
-              Use the uploaded logo from theme settings if enabled.
-              Site name gets precedence with H1 tag on homepage, div on other pages.
-            {% endcomment %}
-            {% if template == 'index' %}
-              <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
-            {% else %}
-              <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
-            {% endif %}
-              {% if settings.logo_use_image %}
-                <a href="/" itemprop="url" class="site-header__logo-link">
-                  <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
-                </a>
-              {% else %}
 
-                <a href="/" itemprop="url">{% include 'logo' %}</a>
-              {% endif %}
-            {% if template == 'index' %}
-              </h1>
-            {% else %}
-              </div>
-            {% endif %}
           </div>
           <div class="grid__item large--one-half large--text-right">
             {% comment %}
@@ -189,11 +185,8 @@
                 - Documentation:  http://shopify.com/timber#ajax-cart
             {% endcomment %}
             <div>
-                <a href="/pages/about-us" class="site-header__cart-toggle no-hover m-r" aria-controls="About Us" aria-expanded="false">
-                  About Supply
-                </a>
               <a href="/cart" class="site-header__cart-toggle js-drawer-open-right no-hover" aria-controls="CartDrawer" aria-expanded="false">
-                <span class="icon icon-cart" aria-hidden="true"></span>
+                <i class="fa fa-shopping-bag fa-2x"></i>
               </a>
             </div>
 
@@ -224,15 +217,8 @@
 
       </div>
     </header>
-
-    <main class="wrapper main-content" role="main">
-
-      {{ content_for_layout }}
-
-    </main>
-
+    {{ content_for_layout }}
     {% include 'footer' %}
-
   </div>
 
   {% include 'add-to-cart' %}
@@ -244,6 +230,7 @@
   {{ 'popmotion.global.min.js' | asset_url | script_tag }}
   {{ 'jquery.backstretch.min.js' | asset_url | script_tag }}
   {{ 'supply.js' | asset_url | script_tag }}
+  {{ 'd3.min.js' | asset_url | script_tag }}
 
   {% comment %}
     Template-specific js
