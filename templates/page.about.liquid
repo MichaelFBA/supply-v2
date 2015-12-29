@@ -7,11 +7,17 @@
     <div class="container">
         <div class="row">
             <div id="about-header" class="col-xs-12 col-md-8">
-                <div class="p-a-md white-bg">
-                    <h1 class="display-4 m-b-0 fw800">{{ page.title }}</h1>
-                    <div class="divider dark"></div>
-                    {{ page.content }}
+                <div class="hidden-xs-down">
+                    <h1 class="display-4 m-b-0 fw800 text-white tight">{{ page.title }}</h1>
+                    <div class="divider light"></div>
                 </div>
+                <div class="hidden-sm-up">
+                    <h1 class="display-4 m-b-0 fw800 tight">{{ page.title }}</h1>
+                    <div class="divider dark"></div>
+                </div>
+                    <div class="card">
+                        <div class="card-block"> {{ page.content }} </div>
+                    </div>
             </div>
 
             <div class="col-xs-12 col-md-4 m-t-md">

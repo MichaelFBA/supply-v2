@@ -1,88 +1,188 @@
 <div class="container h100">
     <div class="row h100">
         <div class="col-xs-12 col-sm-6 p-y-lg">
-            <h1 class="display-4 fw800 m-b-0">Let's do social</h1>
+            <h1 class="display-4 fw800 m-b-0 tight">Let's do social</h1>
             <div class="divider dark"></div>
-            <p>We are one half of the Supply story. The other is you. Talk to us. Not just about what we do and how we can do beDer but about what matters to you and your tribe. What’s your news? What do you think about the things that shape our lives?
+            <p>We are one half of the Supply story. The other is you. Talk to us. Not just about what we do and how we can do better but about what matters to you and your tribe. What’s your news? What do you think about the things that shape our lives?
                 Tell us how the future will be.</p>
             <p>Here's something to think on.</p>
         </div>
         <div class="col-xs-12 col-sm-6 h100">
             <section id="social-area" class="test-area">
-                <article id="mail" class="circle large">
+                <article id="mail" class="circle large" data-radius="130">
                     <div class="vAlign">
-                        <h3>Join the Supply mailing list</h3>
+                        <h3>Join the Supply <br/>mailing list</h3>
+                        <div id="mc_embed_signup" class="p-x-lg">
+                            <form action="//supply.us10.list-manage.com/subscribe/post?u=97276da3f901250d5381a5d6f&amp;id=ef4ea557fb" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate row" target="_blank" novalidate>
+
+                                <input type="email" class="form-control ball-form" id="mce-EMAIL" placeholder="Your e-mail..." value="" name="EMAIL">
+                                <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn-link m-t-sm ball-form-button"><i class="fa fa-chevron-right"></i></button>
+
+                                <div id="mce-responses" class="clear">
+                                    <div class="response" id="mce-error-response" style="display:none"></div>
+                                    <div class="response" id="mce-success-response" style="display:none"></div>
+                                </div>
+                                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                <div style="position: absolute; left: -5000px;">
+                                    <input type="text" name="b_97276da3f901250d5381a5d6f_ef4ea557fb" tabindex="-1" value="">
+                                </div>
+
+                            </form>
+                        </div>
                     </div>
                 </article>
-                <article class="circle small">
-                    <p class="vAlign">Learn more about the world's best materials and craftspeople</p>
+                <article class="circle small" data-radius="65">
+                    <p class="vAlign p-a">Learn more about the world's best materials and craftspeople</p>
                 </article>
-                <article class="circle small">
-                    <p class="vAlign">Find out about new products we produce them.</p>
+                <article class="circle small" data-radius="65">
+                    <p class="vAlign p-a">Find out about new products we produce them.</p>
                 </article>
-                <article class="circle small">
-                    <p class="vAlign">Yes, maybe get a discount every so often</p>
+                <article class="circle small" data-radius="65">
+                    <p class="vAlign p-a">Yes, maybe get a discount every so often</p>
                 </article>
+                <article class="circle small cover" data-radius="65" style="background-image:url(http://thecatapi.com/api/images/get?format=src&type=gif)"></article>
             </section>
         </div>
     </div>
 </div>
 
+{{ 'instafeed.min.js' | asset_url | script_tag }}
 <script>
 $(document).ready(function() {
 
+    function getInstagramPhotos(){
+        var feed = new Instafeed({
+           get: 'tagged',
+           tagName: 'trysupply',
+           clientId: 'afab6a666d784d15915aba4248278570',
+           mock: function(){
 
-    var width = $('#social-area').width();
-    var $body = $('body');
+           },
+           success: function(instagram){
+               instagram.data.each(function(n) {
+                   $('#social-area').append('<article class="circle small" data-radius="65" style="background-image:url('+ n.images.thumbnail.url +')"></article>')
+                });
+               createSocialInteractive();
+           }
+       })
+       feed.run();
+    }
 
-    var balls = ui.select('.small');
-    balls.each(function(ball) {
-        console.log(ball)
-      ball.set({
-        values: {
-          originX: 0,
-          originY: 0,
-          x: 0,
+    getInstagramPhotos();
+
+    function createSocialInteractive(){
+        var width = $('#social-area').width(),
+          height = $('body').height(),
+          padding = 5, // separation between nodes
+          maxRadius = 30;
+
+        var nodes = [];
+
+        var circleRef = d3.selectAll(".circle")[0];
+        var n =  d3.selectAll(".circle")[0].length, // total number of nodes
+            m = 1; // number of distinct clusters
+
+        var pos = {x: width / 2, y: height / 2}
+
+        var xPos = d3.scale.ordinal()
+          .domain(d3.range(m))
+          .rangePoints([width, width], 1);
+
+        var x =
+          d3.scale.linear()
+          .domain([0, width])
+          .range([0, width]);
+
+        var y =
+          d3.scale.linear()
+          .domain([0, height])
+          .range([0, height]);
+
+        nodes = d3.range(n).map(function(key) {
+          var i = Math.floor(Math.random() * m),
+              v = (i + 1) / m * -Math.log(Math.random()),
+              r = $(circleRef[key]).data('radius');
+
+          return {
+            radius: r,
+            cx: pos.x,
+            cy: pos.y
+          };
+        });
+
+        var root = nodes[0];
+        root.fixed = true;
+        root.x = pos.x;
+        root.y = pos.y;
+
+        var force = d3.layout.force()
+          .nodes(nodes)
+          .size([width, height])
+          .gravity(0)
+          .charge(0)
+          .on("tick", tick)
+          .start();
+
+        var $body = d3.select("#MainProduct")
+          .append("div")
+          .attr('style', function(d) {
+            return 'width: ' + width + 'px; height: ' + height + 'px;';
+          });
+
+        var $div = d3.selectAll(".circle")
+          .data(nodes)
+          .call(force.drag);
+
+        function tick(e) {
+          $div
+            .each(gravity(.2 * e.alpha))
+            .each(collide(.5))
+            .style('left', function(d) {
+              d.x = x(Math.max(d.radius, Math.min(width - d.radius, d.x)))
+              return d.x  + 'px';
+            })
+            .style('top', function(d) {
+              d.y=y(Math.max(d.radius, Math.min(height - d.radius, d.y)));
+              return d.y + "px"
+            });
         }
-      })
-    })
 
-    var trackBall = new ui.Track({
-      values: {
-        x: {},
-        y: {}
-      }
-    });
-
-    var springBack = new ui.Simulate({
-      simulate: 'spring',
-      spring: 500,
-      friction: 0.2,
-      values: {
-        x: {
-          to: 200
-        },
-        y: {
-          to: 200
+         // Move nodes toward cluster focus.
+        function gravity(alpha) {
+          return function(d) {
+            d.y += (d.cy - d.y) * alpha;
+            d.x += (d.cx - d.x) * alpha;
+          };
         }
-      }
-    });
 
-    $body.on('mousedown touchstart', '.small', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      activeBall = ui.select(this);
-      activeBall.start(trackBall.extend({
-        smooth: 30
-      }), event);
-
-      $body.on('mouseup touchend', function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        activeBall.start(springBack);
-      });
-    });
+         // Resolve collisions between nodes.
+        function collide(alpha) {
+          var quadtree = d3.geom.quadtree(nodes);
+          return function(d) {
+            var r = d.radius + maxRadius + padding,
+              nx1 = d.x - r,
+              nx2 = d.x + r,
+              ny1 = d.y - r,
+              ny2 = d.y + r;
+            quadtree.visit(function(quad, x1, y1, x2, y2) {
+              if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                  y = d.y - quad.point.y,
+                  l = Math.sqrt(x * x + y * y),
+                  r = d.radius + quad.point.radius + padding;
+                if (l < r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  quad.point.x += x;
+                  quad.point.y += y;
+                }
+              }
+              return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+          };
+        }
+    }
 
 
 })

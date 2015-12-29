@@ -7,6 +7,7 @@ body{background-color: transparent;}
 
 //color
 .white-bg{background-color:#fff; }
+.text-white{color: #ffffff;}
 
 // Utilities
 .relative{position: relative;}
@@ -16,6 +17,7 @@ body{background-color: transparent;}
 .cover{background-size: cover; background-position: center center;}
 .block{display: block;}
 .inline-block{display: inline-block;}
+.tight{line-height: 1em;}
 
 .vAlign {
   position: relative;
@@ -58,7 +60,24 @@ footer{
 
 //Pages
 #about-header{
-    margin-top: -270px;
+    margin-top: 20px;
+    // Small devices (landscape phones, 34em and up)
+    @media (min-width: 34em) {
+
+    }
+    // Medium devices (tablets, 48em and up)
+    @media (min-width: 48em) {
+        margin-top: -270px;
+    }
+
+    // Large devices (desktops, 62em and up)
+    @media (min-width: 62em) {
+        margin-top: -370px;
+    }
+
+    // Extra large devices (large desktops, 75em and up)
+    @media (min-width: 75em) { }
+
 }
 .circle{
     background: #333333;
@@ -66,8 +85,28 @@ footer{
     text-align: center;
     color: white;
     position: absolute;
-    &.small{width:150px;height:150px;}
-    &.large{width:300px;height:300px;}
+    margin-left: -65px;
+    margin-top: -65px;
+
+    &.small{width:130px;height:130px;}
+    &.large{width:260px;height:260px;margin-left: -130px; margin-top: -130px;}
+}
+.ball-form{
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid white !important;
+    border-radius: 0px;
+    padding: 10px 0px;
+    text-align: center;
+    &:focus{
+        border: none;
+        border-bottom: 3px solid white !important;
+    }
+}
+.ball-form-button{
+    &:hover{
+        border: none !important;
+    }
 }
 
 // Components
@@ -77,8 +116,8 @@ footer{
     max-width: 100px;
     margin: 20px 0 25px 1px;
     border-bottom: 5px solid;
-    .dark{ border-color: #333 }
-    .light{ border-color: #fff }
+    &.dark{ border-color: #333 }
+    &.light{ border-color: #fff }
 }
 
 .test-area{
