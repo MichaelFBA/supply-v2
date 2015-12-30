@@ -6,64 +6,48 @@ $(document).ready(function() {
     balls.each(function(ball) {
       ball.set({
         values: {
-          opacity: 0,
-          y: 1000
+          opacity: 1,
+          y: 0,
+          scale: 1
         }
       })
     })
 
     var $body = $('body');
 
-    var showBall = new ui.Tween({
-      values: {
-        y: 0,
-        opacity: 1
-      }
-    });
-
-    var trackBall = new ui.Track({
-      values: {
-        x: {},
-        y: {}
-      }
-    });
+    var grow = new ui.Tween({
+        duration: 300,
+        ease: 'anticipate',
+        values: {
+            scale: 1.2
+        }
+    })
 
     var springBack = new ui.Simulate({
-      simulate: 'spring',
-      spring: 500,
-      friction: 0.2,
+      duration: 1000,
       values: {
-        x: {
-          to: 0
-        },
-        y: {
-          to: 0
-        }
+          scale: {
+              simulate: 'spring',
+              start: 1.2,
+              to: 1,
+              spring: 600,
+              stopSpeed: 0,
+              friction: .3
+          }
       }
     });
 
-    $body.on('mousedown touchstart', '.ball', function(event) {
+    $body.on('mouseover touchstart', '.ball', function(event) {
       event.stopPropagation();
       event.preventDefault();
-
       activeBall = ui.select(this);
-      activeBall.start(trackBall.extend({
-        smooth: 30
-      }), event);
-
-      $body.on('mouseup touchend', function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        activeBall.start(springBack);
-      });
+      activeBall.start(grow);
     });
 
-    $(".test-area").each(function(i, el) {
-      balls.members[i].start(showBall.extend({
-        duration: 400,
-        delay: 500,
-        ease: 'backOut'
-      }))
+    $body.on('mouseleave touchend', '.ball', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      activeBall.start(springBack);
     });
 
   }

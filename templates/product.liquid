@@ -10,111 +10,68 @@
 {% endcomment %}
 
 <div itemscope itemtype="http://schema.org/Product">
+    <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+    <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+    {% comment %}Get first variant, or deep linked one{% endcomment %}
 
-  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
-  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+    {% assign current_variant = product.selected_or_first_available_variant %}
 
-  {% comment %}
-    Get first variant, or deep linked one
-  {% endcomment %}
-  {% assign current_variant = product.selected_or_first_available_variant %}
-
-  <section id="MainProduct" class="h100">
-      {% comment %} Product Name {% endcomment %}
-      <div class="uiCircle productName" data-radius="62.5">
-          <h1 itemprop="name" class="vAlign">{{ product.title }}</h1>
-      </div>
-
-      {% comment %} Product Price {% endcomment %}
-      <div class="uiCircle productPrice" data-radius="62.5">
-          <h2 itemprop="price" class="vAlign">{{ current_variant.price | money }}</h2>
-      </div>
-
-      {% comment %} Product Images {% endcomment %}
-      {% for image in product.images %}
-        <div class="uiCircle productImage cover" data-radius="37.5" data-img="{{ image.src | img_url: '2048x2048' }}" style="background-image:url({{ image.src | img_url: 'compact' }})"></div>
-      {% endfor %}
-
-      {% comment %} Product options {% endcomment %}
-      {% for option in product.options %}
-        <div class="uiCircle" data-radius="37.5"><h4 class="vAlign text-center">{{option}}</h4></div>
-      {% endfor %}
-
-      {% comment %} Product Info {% endcomment %}
-      <div class="uiCircle" data-radius="37.5"><h4 class="vAlign text-center">Info</h4></div>
-
-      {% comment %} Product Add to Cart {% endcomment %}
-      <div class="uiCircle btn--secondary" data-radius="37.5"><h4 class="vAlign text-center">Buy</h4></div>
-  </section>
-
-  <div class="grid product-single">
-
-    <div class="grid__item large--one-half">
-
-
-      <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <meta itemprop="priceCurrency" content="{{ shop.currency }}">
-
         <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
-        {% comment %}
-          ID addToCartForm is a selector for the ajax cart plugin
-        {% endcomment %}
-        <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-vertical">
+        {% comment %}  ID addToCartForm is a selector for the ajax cart plugin {% endcomment %}
+        <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
 
-          {% comment %}
-            Add product variants as a dropdown.
-              - By default, each variant (or combination of variants) will display as its own <option>
-              - To separate these into multiple steps, which we suggest, use option_selection.js (see below)
+            <section id="MainProduct" class="h100">
+                {% comment %} Product Name {% endcomment %}
+                <div class="uiCircle productName"><h1 itemprop="name" class="vAlign">{{ product.title }}</h1></div>
 
-            You can leverage jQuery to add a callback on page load and each time the select element changes:
-              - Include option_selection.js (as seen at the bottom of this file)
-              - This allows you to use JavaScript anytime the variant dropdown changes
-              - This also separates out your variant options (ie. size, color, etc.) to separate select elements
+                {% comment %} Product Price {% endcomment %}
+                <div class="uiCircle productPrice">
+                    <h2 id="ProductPrice" itemprop="price" class="vAlign">{{ current_variant.price | money }}</h2>
+                    {% if product.compare_at_price_max > product.price %}
+                        <p id="ComparePrice"><em>{{ 'products.product.compare_at' | t }} {{ current_variant.compare_at_price | money }}</p>
+                    {% endif %}
+                </div>
 
-            For more information on products with multiple options, visit:
-              - http://docs.shopify.com/support/your-website/themes/can-i-make-my-theme-use-products-with-multiple-options#update-product-liquid
-          {% endcomment %}
-          <select name="id" id="productSelect" class="product-single__variants">
-            {% for variant in product.variants %}
-              {% if variant.available %}
+                {% comment %} Product Images {% endcomment %}
+                {% for image in product.images %}
+                    <div class="uiCircle productImage cover" data-img="{{ image.src | img_url: '2048x2048' }}" style="background-image:url({{ image.src | img_url: 'compact' }})"></div>
+                {% endfor %}
 
-                {% comment %}
-                  Note: if you use option_selection.js, your <select> tag will be overwritten, meaning what you have inside <option> will not reflect what you coded below.
-                {% endcomment %}
-                <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+                {% comment %} Product options {% endcomment %}
+                {% for option in product.options %}
+                    <div class="uiCircle" data-toggle="modal" data-target="#{{option}}Modal"><h4 class="vAlign text-center">{{option}}</h4></div>
+                {% endfor %}
 
-              {% else %}
-                <option disabled="disabled">
-                  {{ variant.title }} - {{ 'products.product.sold_out' | t }}
-                </option>
-              {% endif %}
-            {% endfor %}
-          </select>
+                {% comment %} Product Info {% endcomment %}
+                <div class="uiCircle" data-toggle="modal" data-target="#InfoModal"><h4 class="vAlign text-center">Info</h4></div>
 
-          <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-          <span id="ProductPrice" class="h2" itemprop="price">
-            {{ current_variant.price | money }}
-          </span>
+                {% comment %} Product Add to Cart {% endcomment %}
+                <button type="submit" name="add" id="AddToCart" class="uiCircle btn--secondary p-a-0 no-outline"><h4 id="AddToCartText" class="tight m-b-0 text-center">{{ 'products.product.add_to_cart' | t }}</h4></button>
+            </section>
 
-          {% if product.compare_at_price_max > product.price %}
+            <select name="id" id="productSelect" class="product-single__variants">
+                {% for variant in product.variants %}
+                    {% if variant.available %}
+                        {% comment %}Note: if you use option_selection.js, your <select> tag will be overwritten, meaning what you have inside <option> will not reflect what you coded below.{% endcomment %}
+                        <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+                    {% else %}
+                        <option disabled="disabled">
+                            {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
             <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-            <p id="ComparePrice">
-              {{ 'products.product.compare_at' | t }} {{ current_variant.compare_at_price | money }}
-            </p>
-          {% endif %}
-
-          <label for="Quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
-          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
-
-          <button type="submit" name="add" id="AddToCart" class="btn">
-            <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
-          </button>
+            <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector visually-hidden">
         </form>
+    </div>
 
-      </div>
-
-      <div class="product-description rte" itemprop="description">
+      <div class="visually-hidden" itemprop="description">
         {{ product.description }}
       </div>
 
@@ -138,10 +95,6 @@
           </p>
         {% endif %}
       {% endif %}
-
-    </div>
-  </div>
-
 </div>
 
 <!-- Tags -->
@@ -168,178 +121,200 @@
 {% endcomment %}
 {{ 'option_selection.js' | shopify_asset_url | script_tag }}
 <script>
-  var selectCallback = function(variant, selector) {
-    timber.productPage({
-      money_format: "{{ shop.money_format }}",
-      variant: variant,
-      selector: selector
-    });
-  };
 
-  jQuery(function($) {
-    new Shopify.OptionSelectors('productSelect', {
-      product: {{ product | json }},
-      onVariantSelected: selectCallback,
-      enableHistoryState: true
-    });
-
-    console.log('product', {{ product | json }});
-    var product = {{ product | json }};
-    //set first image
-    $('#MainProduct').backstretch(product.images[0], { fade: 1000 });
-
-    // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
-    {% if product.options.size == 1 and product.options.first != 'Title' %}
-      $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}</label>');
-    {% endif %}
-
-    // Hide selectors if we only have 1 variant and its title contains 'Default'.
-    {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
-      $('.selector-wrapper').hide();
-    {% endif %}
-  });
-
-  //Product Balls
-  $(document).ready(function(){
-
-  var width = $('#MainProduct').width(),
-    height = $('body').height(),
-    padding = 5, // separation between nodes
-    maxRadius = 30;
-
-  var nodes = [];
-
-  var circleRef = d3.selectAll(".uiCircle")[0];
-  var n =  d3.selectAll(".uiCircle")[0].length, // total number of nodes
-      m = 1; // number of distinct clusters
-
-  var pos = {x: width - 200, y: height / 2}
-
-  var xPos = d3.scale.ordinal()
-    .domain(d3.range(m))
-    .rangePoints([width, width], 1);
-
-  var x =
-    d3.scale.linear()
-    .domain([0, width])
-    .range([0, width]);
-
-  var y =
-    d3.scale.linear()
-    .domain([0, height])
-    .range([0, height]);
-
-  nodes = d3.range(n).map(function(key) {
-    var i = Math.floor(Math.random() * m),
-        v = (i + 1) / m * -Math.log(Math.random()),
-        r = $(circleRef[key]).data('radius');
-
-    return {
-      radius: r,
-      cx: xPos(i),
-      cx: pos.x,
-      cy: pos.y
+    var selectCallback = function(variant, selector) {
+        timber.productPage({
+            money_format: "{{ shop.money_format }}",
+            variant: variant,
+            selector: selector
+        });
     };
-  });
 
-  console.log('nodes', nodes)
+    jQuery(function($) {
+        new Shopify.OptionSelectors('productSelect', {
+            product: {{ product | json }},
+            onVariantSelected: selectCallback,
+            enableHistoryState: true
+        });
 
-  var root = nodes[0];
-  root.fixed = true;
-  root.x = pos.x;
-  root.y = pos.y;
+        var product = {{ product | json }};
 
-  var force = d3.layout.force()
-    .nodes(nodes)
-    .size([width, height])
-    .gravity(0)
-    .charge(0)
-    .on("tick", tick)
-    .start();
+        // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+        {% if product.options.size == 1 and product.options.first != 'Title' %}
+            $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}</label>');
+            {% endif %}
 
-  var $body = d3.select("#MainProduct")
-    .append("div")
-    .attr('style', function(d) {
-      return 'width: ' + width + 'px; height: ' + height + 'px;';
-    });
+        // Hide selectors if we only have 1 variant and its title contains 'Default'.
+        {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+            $('.selector-wrapper').hide();
+        {% endif %}
 
-  var $div = d3.selectAll(".uiCircle")
-    .data(nodes)
-    //.on("mouseover", handleMouseOver)
-    //.on("mouseout", handleMouseOut)
-    //.enter()
-    // .append("div").attr('class', 'absolute img-circle bg-white ball')
-    // .attr('style', function(d) {
-    //   return 'width: ' + (d.radius * 2) + 'px; height: ' + (d.radius * 2) + 'px; margin-left: -' + d.radius + 'px; margin-top: -' + d.radius + 'px;';
-    // })
-    .call(force.drag);
-
-  function handleMouseOver(obj){
-      //obj.radius = obj.radius * 2;
-      console.log('over', arguments)
-  }
-  function handleMouseOut(){
-      console.log('out', arguments)
-  }
-
-  function tick(e) {
-    $div
-      .each(gravity(.2 * e.alpha))
-      .each(collide(.5))
-      .style('left', function(d) {
-        d.x = x(Math.max(d.radius, Math.min(width - d.radius, d.x)))
-        return d.x  + 'px';
-      })
-    //   .style('width', function(d) { return d.radius + 'px' })
-    //   .style('height', function(d) { return d.radius + 'px' })
-      .style('top', function(d) {
-        d.y=y(Math.max(d.radius, Math.min(height - d.radius, d.y)));
-        return d.y + "px"
-      });
-  }
-
-   // Move nodes toward cluster focus.
-  function gravity(alpha) {
-    return function(d) {
-      d.y += (d.cy - d.y) * alpha;
-      d.x += (d.cx - d.x) * alpha;
-    };
-  }
-
-   // Resolve collisions between nodes.
-  function collide(alpha) {
-    var quadtree = d3.geom.quadtree(nodes);
-    return function(d) {
-      var r = d.radius + maxRadius + padding,
-        nx1 = d.x - r,
-        nx2 = d.x + r,
-        ny1 = d.y - r,
-        ny2 = d.y + r;
-      quadtree.visit(function(quad, x1, y1, x2, y2) {
-        if (quad.point && (quad.point !== d)) {
-          var x = d.x - quad.point.x,
-            y = d.y - quad.point.y,
-            l = Math.sqrt(x * x + y * y),
-            r = d.radius + quad.point.radius + padding;
-          if (l < r) {
-            l = (l - r) / l * alpha;
-            d.x -= x *= l;
-            d.y -= y *= l;
-            quad.point.x += x;
-            quad.point.y += y;
-          }
+        //Move selects into modals
+        for (var i = 0; i < product.options.length; i++) {
+            if (product.options[i] == "Size" || product.options[i] == "size") {
+                $('#productSelect-option-' + i).appendTo('#SizeModal .modal-body #select').addClass('w100');
+            }
+            if (product.options[i] == "Color" || product.options[i] == "color" || product.options[i] == "Color" || product.options[i] == "color") {
+                $('#productSelect-option-' + i).appendTo('#ColourModal .modal-body #select').addClass('w100');
+            }
         }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-      });
-    };
-  }
+    });
 
-  //Product Images
-  $('.productImage').on('click', function(){
-      var imgUrl = $(this).data('img');
-      $('#MainProduct').backstretch(imgUrl, { fade: 1000 });
-  })
+    //Product Balls
+    $(document).ready(function(){
+        //set first image
+        var product = {{ product | json }};
+        $('#MainProduct').backstretch(product.images[0], { fade: 1000 });
 
+        //Product Images
+        $('.productImage').on('click', function(){
+            var imgUrl = $(this).data('img');
+            $('#MainProduct').backstretch(imgUrl, { fade: 1000 });
+        })
 
-})
+        //Create Interactive
+        createProductInteraction();
+
+        //On resize recreate the interactive;
+        var id;
+        $(window).resize(function() {
+            clearTimeout(id);
+            id = setTimeout(doneResizing, 500);
+
+        });
+        function doneResizing(){
+            var currentImage = $('.backstretch img').attr('src');
+            $('#MainProduct').backstretch('destroy');
+            $( "#MainProduct" ).children().not( ".uiCircle" ).remove();
+            $('#MainProduct').backstretch(currentImage);
+            createProductInteraction();
+
+        }
+    })
+
+    function createProductInteraction(){
+        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+        var width = $('#MainProduct').width(),
+            height = $('body').height(),
+            padding = 5, // separation between nodes
+            maxRadius = 30;
+        var pos = {x: width - 200, y: height / 2}
+        var nodes = [];
+        var circleRef = d3.selectAll(".uiCircle")[0];
+        var n = d3.selectAll(".uiCircle")[0].length, // total number of nodes
+            m = 1; // number of distinct clusters
+        var xPos = d3.scale.ordinal()
+                .domain(d3.range(m))
+                .rangePoints([width, width], 1);
+        var x = d3.scale.linear()
+                .domain([0, width])
+                .range([0, width]);
+        var y = d3.scale.linear()
+                .domain([0, height])
+                .range([0, height]);
+
+        if(isMobile.matches){
+            var diameter = $(circleRef[0]).width();
+            pos = {x: width - diameter, y: height - diameter };
+        }
+
+        nodes = d3.range(n).map(function(key) {
+            var i = Math.floor(Math.random() * m),
+                v = (i + 1) / m * -Math.log(Math.random()),
+                r = $(circleRef[key]).width() / 2;
+            return {
+                radius: r,
+                cx: xPos(i),
+                cx: pos.x,
+                cy: pos.y
+            };
+        });
+
+        var root = nodes[0];
+        root.fixed = true;
+        root.x = pos.x;
+        root.y = pos.y;
+
+        var force = d3.layout.force()
+            .nodes(nodes)
+            .size([width, height])
+            .gravity(0)
+            .charge(0)
+            .on("tick", tick)
+            .start();
+
+        var $body = d3.select("#MainProduct")
+            .append("div")
+            .attr('style', function(d) {
+              return 'width: ' + width + 'px; height: ' + height + 'px;';
+            });
+
+        var $div = d3.selectAll(".uiCircle")
+            .data(nodes)
+            .call(force.drag)
+            .on("mouseover", function(d){
+				d3.select(this)
+					.transition()
+					.duration(300)
+					.ease('elastic')
+					.style("transform", "scale(1.1)")
+			})
+            .on("mouseleave", function(d){
+				d3.select(this)
+					.transition()
+					.duration(1000)
+					.ease('elastic')
+					.style("transform", "scale(1)")
+			})
+
+        function tick(e) {
+            $div
+                .each(gravity(.2 * e.alpha))
+                .each(collide(.5))
+                .style('left', function(d) {
+                    d.x = x(Math.max(d.radius, Math.min(width - d.radius, d.x)))
+                    return d.x  + 'px';
+                })
+                .style('top', function(d) {
+                    d.y=y(Math.max(d.radius, Math.min(height - d.radius, d.y)));
+                    return d.y + "px"
+                });
+        }
+
+        // Move nodes toward cluster focus.
+        function gravity(alpha) {
+            return function(d) {
+                d.y += (d.cy - d.y) * alpha;
+                d.x += (d.cx - d.x) * alpha;
+            };
+        }
+
+        // Resolve collisions between nodes.
+        function collide(alpha) {
+            var quadtree = d3.geom.quadtree(nodes);
+            return function(d) {
+                var r = d.radius + maxRadius + padding,
+                    nx1 = d.x - r,
+                    nx2 = d.x + r,
+                    ny1 = d.y - r,
+                    ny2 = d.y + r;
+                quadtree.visit(function(quad, x1, y1, x2, y2) {
+                    if (quad.point && (quad.point !== d)) {
+                        var x = d.x - quad.point.x,
+                            y = d.y - quad.point.y,
+                            l = Math.sqrt(x * x + y * y),
+                            r = d.radius + quad.point.radius + padding;
+                        if (l < r) {
+                            l = (l - r) / l * alpha;
+                            d.x -= x *= l;
+                            d.y -= y *= l;
+                            quad.point.x += x;
+                            quad.point.y += y;
+                        }
+                    }
+                    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                });
+            };
+        }
+    }
 </script>
