@@ -79,6 +79,10 @@
         If the user is on a collection product page (ie with /collections/collection-handle/products/product-handle)
         in the URL, we can show next/previous links to other products in the collection.
       {% endcomment %}
+
+      {% comment %}
+      Uncomment if you next / previous product
+
       {% if collection %}
         {% if collection.previous_product or collection.next_product %}
           <p>
@@ -95,6 +99,7 @@
           </p>
         {% endif %}
       {% endif %}
+      {% endcomment %}
 </div>
 
 <!-- Tags -->
@@ -105,11 +110,8 @@
 {% include 'about-small' %}
 
 <div class="row h100">
-{% capture index %}{{ 'now' | date: '%S' | times: collections.frontpage.products.size | divided_by: 60 }}{% endcapture %}
-    {% for product in collections.frontpage.products offset:index limit:2 %}
-  {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
-  {% include 'product-grid-item' %}
-{% endfor %}
+    {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
+    {% include 'related-products' %}
 </div>
 
 {% comment %}
@@ -162,7 +164,7 @@
             if (product.options[i] == "Size" || product.options[i] == "size") {
                 $('#productSelect-option-' + i).appendTo('#SizeModal .modal-body #select').addClass('w100');
             }
-            if (product.options[i] == "Color" || product.options[i] == "color" || product.options[i] == "Color" || product.options[i] == "color") {
+            if (product.options[i] == "Colour" || product.options[i] == "colour") {
                 $('#productSelect-option-' + i).appendTo('#ColourModal .modal-body #select').addClass('w100');
             }
         }
@@ -183,9 +185,12 @@
         //Create Interactive
         createProductInteraction();
 
-        //On resize recreate the interactive;
+        //On resize recreate the interactive (only if width changed);
         var id;
+        var w = $( window ).width();
         $(window).resize(function() {
+            if ($(window).width()==w) return;
+            w = $(window).width();
             clearTimeout(id);
             id = setTimeout(doneResizing, 500);
 
@@ -196,7 +201,6 @@
             $( "#MainProduct" ).children().not( ".uiCircle" ).remove();
             $('#MainProduct').backstretch(currentImage);
             createProductInteraction();
-
         }
     })
 
@@ -232,7 +236,6 @@
                 r = $(circleRef[key]).width() / 2;
             return {
                 radius: r,
-                cx: xPos(i),
                 cx: pos.x,
                 cy: pos.y
             };
@@ -265,7 +268,7 @@
 					.transition()
 					.duration(300)
 					.ease('elastic')
-					.style("transform", "scale(1.1)")
+					.style("transform", "scale(1.05)")
 			})
             .on("mouseleave", function(d){
 				d3.select(this)
@@ -292,8 +295,10 @@
         // Move nodes toward cluster focus.
         function gravity(alpha) {
             return function(d) {
-                d.y += (d.cy - d.y) * alpha;
-                d.x += (d.cx - d.x) * alpha;
+                //d.y += (d.cy - d.y) * alpha;
+                //d.x += (d.cx - d.x) * alpha;
+                d.y += (root.y - d.y) * alpha;
+                d.x += (root.x - d.x) * alpha;
             };
         }
 

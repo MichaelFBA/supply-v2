@@ -185,7 +185,8 @@ footer{
     margin-left: -27.5px;
     margin-top: -27.5px;
     cursor: pointer;
-    @media (min-width: 48em) { margin-left: -37.5px; margin-top: -37.5px; width: 75px; height:75px; }
+    font-size: 0.7em;
+    @media (min-width: 48em) { margin-left: -37.5px; margin-top: -37.5px; width: 75px; height:75px; font-size: 1em; }
 
     &.productName{
         width: 100px;
@@ -193,9 +194,11 @@ footer{
         margin-left: -50px;
         margin-top: -50px;
         text-align: center;
+        cursor: move !important;
+
         @media (min-width: 48em) { margin-left: -62.5px; margin-top: -62.5px; width: 125px; height:125px; }
         h1{
-            font-size: 1.25em !important;
+            font-size: 1.25em;
         }
     }
     &.productPrice{
