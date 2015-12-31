@@ -97,13 +97,13 @@ footer{
 .ball-form{
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid white !important;
+    border-bottom: 1px solid #e5e5e5 !important;
     border-radius: 0px;
     padding: 10px 0px;
     text-align: center;
     &:focus{
         border: none;
-        border-bottom: 3px solid white !important;
+        border-bottom: 1px solid #e5e5e5 !important;
     }
 }
 .ball-form-button{

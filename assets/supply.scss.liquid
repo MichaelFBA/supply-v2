@@ -12,7 +12,7 @@ body{background-color: transparent;}
 // Utilities
 .relative{position: relative;}
 .absolute{position: absolute;}
-.fw800{font-weight:800;}
+.fw800{font-weight:700;}
 .h100{height:100%;}
 .w100{width:100%;}
 .cover{background-size: cover; background-position: center center;}
@@ -28,12 +28,33 @@ body{background-color: transparent;}
   transform: translateY(-50%);
 }
 
+//Card
+.card, .card-img-top{border-radius: 0;}
+
+//Columns
+.two-column-to-one{
+    -webkit-column-count: 1; /* Chrome, Safari, Opera */
+    -moz-column-count: 1; /* Firefox */
+    column-count: 1;
+    @media (min-width: 48em) {
+        -webkit-column-count: 2; /* Chrome, Safari, Opera */
+        -moz-column-count: 2; /* Firefox */
+        column-count: 2;
+    }
+}
+
 //Typography
 .no-outline{outline: none;}
 .no-hover{text-decoration: none !important;}
 body, input, textarea, button, select, p {
     font-weight: 400;
+    line-height: 1.4;
 }
+
+p{
+    margin: 0 0 8px 0;
+}
+
 .display-4 {
     font-size: 2.8rem;
 }
@@ -76,12 +97,12 @@ footer{
     }
     // Medium devices (tablets, 48em and up)
     @media (min-width: 48em) {
-        margin-top: -270px;
+        margin-top: -215px;
     }
 
     // Large devices (desktops, 62em and up)
     @media (min-width: 62em) {
-        margin-top: -370px;
+        margin-top: -220px;
     }
 
     // Extra large devices (large desktops, 75em and up)
@@ -103,13 +124,13 @@ footer{
 .ball-form{
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid white !important;
+    border-bottom: 1px solid #e5e5e5 !important;
     border-radius: 0px;
     padding: 10px 0px;
     text-align: center;
     &:focus{
         border: none;
-        border-bottom: 3px solid white !important;
+        border-bottom: 1px solid #e5e5e5 !important;
     }
 }
 .ball-form-button{
@@ -194,8 +215,8 @@ footer{
         margin-left: -50px;
         margin-top: -50px;
         text-align: center;
-        cursor: move !important;
-
+        // cursor: move !important;
+        cursor: url(http://wiki.ooo4kids.org/images/b/b3/Cursor-Hand.svg), auto;
         @media (min-width: 48em) { margin-left: -62.5px; margin-top: -62.5px; width: 125px; height:125px; }
         h1{
             font-size: 1.25em;
@@ -208,12 +229,10 @@ footer{
         margin-top: -50px;
         text-align: center;
         @media (min-width: 48em) { margin-left: -62.5px; margin-top: -62.5px; width: 125px; height:125px; }
-        background-color: transparent;
-        border: 3px solid #333333;
-        color: #333333;
+        background-color: #00f3bd;
+        color: #ffffff;
     }
     &.productImage{
-        border: 3px solid #333333;
         background-color: whitesmoke;
     }
 }

@@ -1,14 +1,6 @@
-<footer class="container">
+<footer class="container p-t-lg">
     <section class="row text-muted p-y">
         <div class="col-xs-6 col-sm-3">
-            <hr class="hr--small">
-            <h6 class="m-b-md">ABOUT</h6>
-
-            © {{ 'now' | date: "%Y" }} Supply</br>
-            Licensed under a Creative Commons License.
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <hr class="hr--small">
             <h6 class="m-b-md">SECTIONS</h6>
 
             <a class="block" href="/pages/about-us">About</a>
@@ -17,7 +9,6 @@
             <a class="block" href="/pages/terms">Terms</a>
         </div>
         <div class="col-xs-6 col-sm-3">
-            <hr class="hr--small">
             <h6 class="m-b-md">FOLLOW</h6>
 
 
@@ -28,7 +19,6 @@
             <a class="block" target="_blank" href="https://twitter.com/TrySupply">Twitter</a>
         </div>
         <div class="col-xs-6 col-sm-3">
-            <hr class="hr--small">
             <h6 class="m-b-md">WHAT WE BELIEVE</h6>
 
             Making and consuming things is how this whole crazy beautiful parade we call life works. At Supply we believe that if it’s made good it feels good too. {% comment %} Loop through available payment methods and show their icons. {% endcomment %} {% unless
@@ -46,6 +36,11 @@
                 {% endfor %}
             </ul>
             {% endunless %}
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <h6 class="m-b-md">LEGAL</h6>
+
+            © {{ 'now' | date: "%Y" }} Supply</br>
         </div>
     </section>
 </footer>

@@ -107,12 +107,12 @@
     {% include tag %}
 {% endfor %}
 
-{% include 'about-small' %}
-
 <div class="row h100">
     {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
     {% include 'related-products' %}
 </div>
+
+{% include 'about-small' %}
 
 {% comment %}
   To take advantage of a callback on the select dropdown, add option_selection.js
