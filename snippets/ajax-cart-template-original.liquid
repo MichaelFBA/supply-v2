@@ -9,49 +9,63 @@
   <script id="CartTemplate" type="text/template">
   {% raw %}
     <form action="/cart" method="post" novalidate class="cart ajaxcart">
+      <div class="ajaxcart__inner">
         {{#items}}
-        <div class="card" data-line="{{line}}">
-            {{item}}
-            <a href="{{url}}"><img class="card-img-top" src="{{img}}" alt="{{name}}"></a>
-            <div class="card-block">
-                <h4 class="card-title m-b-0" class="ajaxcart__product-name">{{name}}</h4>
-                {{#if variation}}
+        <div class="ajaxcart__product">
+          <div class="ajaxcart__row" data-line="{{line}}">
+            <div class="grid">
+              <div class="grid__item one-quarter">
+                <a href="{{url}}" class="ajaxcart__product-image"><img src="{{img}}" alt=""></a>
+              </div>
+              <div class="grid__item three-quarters">
+                <p>
+                  <a href="{{url}}" class="ajaxcart__product-name">{{name}}</a>
+                  {{#if variation}}
                     <span class="ajaxcart__product-meta">{{variation}}</span>
-                {{/if}}
-
-                {{#properties}}
+                  {{/if}}
+                  {{#properties}}
                     {{#each this}}
-                        {{#if this}}
-                            <span class="ajaxcart__product-meta">{{@key}}: {{this}}</span>
-                        {{/if}}
+                      {{#if this}}
+                        <span class="ajaxcart__product-meta">{{@key}}: {{this}}</span>
+                      {{/if}}
                     {{/each}}
-                {{/properties}}
-
-                {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+                  {{/properties}}
+                  {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
                     <span class="ajaxcart__product-meta">{{ vendor }}</span>
-                {% endraw %}{% endif %}{% raw %}
+                  {% endraw %}{% endif %}{% raw %}
+                </p>
 
-                <section class="clearfix m-t">
-                    <div class="ajaxcart__qty pull-left">
-                        <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
-                            <span class="icon icon-minus" aria-hidden="true"></span>
-                            <span class="fallback-text">&minus;</span>
-                        </button>
-                        <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
-                        <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
-                            <span class="icon icon-plus" aria-hidden="true"></span>
-                            <span class="fallback-text">+</span>
-                        </button>
+                <div class="grid--full display-table">
+                  <div class="grid__item display-table-cell one-half">
+                    <div class="ajaxcart__qty">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+                        <span class="icon icon-minus" aria-hidden="true"></span>
+                        <span class="fallback-text">&minus;</span>
+                      </button>
+                      <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+                        <span class="icon icon-plus" aria-hidden="true"></span>
+                        <span class="fallback-text">+</span>
+                      </button>
                     </div>
-                    <p class="pull-right m-b-0 pt5">{{{price}}}</p>
-                </section>
+                  </div>
+                  <div class="grid__item display-table-cell one-half text-right">
+                    {{{price}}}
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
         {{/items}}
 
         {% endraw %}{% if settings.cart_notes_enable %}{% raw %}
-        <textarea placeholder="{% endraw %}{{ 'cart.general.note' | t }}{% raw %}" name="note" rows="2" class="input-full" id="CartSpecialInstructions">{{ note }}</textarea>
+          <div>
+            <label for="CartSpecialInstructions">{% endraw %}{{ 'cart.general.note' | t }}{% raw %}</label>
+            <textarea name="note" class="input-full" id="CartSpecialInstructions">{{ note }}</textarea>
+          </div>
         {% endraw %}{% endif %}{% raw %}
+      </div>
       <div class="ajaxcart__footer">
         <div class="grid--full">
           <div class="grid__item two-thirds">

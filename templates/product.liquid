@@ -104,6 +104,14 @@
 
 {% include 'about-small' %}
 
+<div class="row h100">
+{% capture index %}{{ 'now' | date: '%S' | times: collections.frontpage.products.size | divided_by: 60 }}{% endcapture %}
+    {% for product in collections.frontpage.products offset:index limit:2 %}
+  {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
+  {% include 'product-grid-item' %}
+{% endfor %}
+</div>
+
 {% comment %}
   To take advantage of a callback on the select dropdown, add option_selection.js
   and customize the JS in timber.productPage as needed.
