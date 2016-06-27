@@ -236,3 +236,45 @@ footer{
         background-color: whitesmoke;
     }
 }
+
+// VIDEO
+#video{
+
+    cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg), auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    // position: absolute;
+    padding: 50px 50px;
+    // Small devices (landscape phones, 34em and up)
+    @media (min-width: 34em) {
+        padding: 50px 50px;
+    }
+    // Medium devices (tablets, 48em and up)
+    @media (min-width: 48em) {
+        padding: 50px 100px;
+    }
+
+    // Large devices (desktops, 62em and up)
+    @media (min-width: 62em) {
+        padding: 100px 200px;
+    }
+    .embed-responsive-16by9{
+        cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/play.svg), auto;
+    }
+
+    video{
+        -webkit-transition-delay: 2ms;
+        -moz-transition-delay: 2ms;
+        -o-transition-delay: 2ms;
+        transition-delay: 2ms;
+    }
+}
+
+.transitionOffScreen{
+    -webkit-transition: ease-in-out, all .5s ease-in-out; /* Safari 3.1 to 6.0 */
+    transition: ease-in-out, all .5s ease-in-out;
+    transform: translate(0px, -100%);
+    -webkit-transform: translate(0px, -100%);
+    -moz-transform: translate(0px, -100%);
+    -o-transform: translate(0px, -100%);
+    -ms-transform: translate(0px, -100%);
+}
