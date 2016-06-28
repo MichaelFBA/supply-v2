@@ -275,26 +275,34 @@ footer{
     bottom: 0;
     cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg), auto;
     background-color: rgba(0, 0, 0, 0.5);
-    // position: absolute;
-    padding: 50px 50px;
-    // Small devices (landscape phones, 34em and up)
-    @media (min-width: 34em) {
-        padding: 50px 50px;
-    }
-    // Medium devices (tablets, 48em and up)
-    @media (min-width: 48em) {
-        padding: 50px 100px;
-    }
-    // Large devices (desktops, 62em and up)
-    @media (min-width: 62em) {
-        padding: 100px 200px;
-    }
-    .embed-responsive-16by9{
+    height: 100%;
+
+    .video-wrap{
         cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/play.svg), auto;
-        -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
-        box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
-        background-color: #333;
+        width: 90%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: auto auto;
+        display: block;
+
+        @media (min-width: 34em) {
+            width: 80%
+        }
+        @media (min-width: 48em) {
+            width: 80%
+        }
+        @media (min-width: 62em) {
+            width: 75%;
+        }
+
+        video{
+            width: 100%;
+            -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+            background-color: #333;
+        }
     }
 }
 
