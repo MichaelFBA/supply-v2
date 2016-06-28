@@ -31,15 +31,18 @@ $(document).ready(function() {
 
   // init Packery
   var $grid = $('.grid').packery({
+    columnWidth: '.grid-sizer',
+    gutter: '.gutter-sizer',
     itemSelector: '.grid-item',
-    gutter: 0,
+    percentPosition: true,
     containerStyle: {
       padding: '10px'
     }
   });
   // layout Packery after each image loads
-  $grid.imagesLoaded().progress(function() {
+  $grid.imagesLoaded(function() {
     $grid.packery();
+    $('.grid').addClass('loaded');
   });
 
 

@@ -22,9 +22,9 @@ grid_item_width if no variable is set {% endcomment %}
 
     {% comment %} Link to your product with the 'within: collection' filter for the link to be aware of the collection. This allows you to create collection-based navigation on the product page. Results of using 'within: collection': - Instead of a URL with
     /products/product-handle you would get /collections/collection-handle/products/product-handle For more info on navigation within a collection - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection {% endcomment%}
-    <a href="{{ product.url | within: collection }}" class="relative block">
+    <a href="{{ product.url | within: collection }}" class="product-homepage">
         <img src="{{ product.featured_image.src | img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}"/>
-        <span class="absolute">
+        <p>
             {{ product.title }}
             {% comment %} You can show a leading 'from' or 'up to' by checking 'product.price_varies' if your variants have different prices. {% endcomment %} {% if on_sale %} {% if product.price_varies %} {% assign sale_price = product.price | money %} {{ 'products.product.on_sale_from_html'
             | t: price: sale_price }} {% else %}
@@ -34,11 +34,11 @@ grid_item_width if no variable is set {% endcomment %}
             <br>
             <em>{{ 'products.product.sold_out' | t }}</em>
             {% endif %} {% if on_sale %}
-            <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+            <strong class="visually-hidden">{{ 'products.general.regular_price' | t }}</strong>
             <br>
             <s>{{ product.compare_at_price | money }}</s>
             {% endif %}
-        </span>
+        </p>
     </a>
 
 </div>

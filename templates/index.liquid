@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <div class="embed-responsive embed-responsive-16by9">
 
-            <video poster="">
+            <video poster="https://cdn.shopify.com/s/files/1/1073/8830/files/poster.jpg?16596465149826440614">
                 <source src="https://cdn.shopify.com/s/files/1/1073/8830/files/SUPPLY_EDIT_v4.mp4?10105095783517067955" type="video/mp4">
                 <source src="https://cdn.shopify.com/s/files/1/1073/8830/files/SUPPLY_EDIT_v4.webmhd.webm?10105095783517067955" type="video/webm">
                 <source src="https://cdn.shopify.com/s/files/1/1073/8830/files/SUPPLY_EDIT_v4.oggtheora.ogv?10105095783517067955" type="video/ogg">
@@ -28,6 +28,13 @@
   each other properly at each breakpoint.
 {% endcomment %}
 <div class="grid">
+    <!-- .grid-sizer & .gutter-sizer empty elements
+   only used for element sizing -->
+ <div class="grid-sizer"></div>
+ <div class="gutter-sizer"></div>
+ <div class="grid-item"></div>
+ <div class="grid-item grid-item--width2"></div>
+ 
   {% comment %}
     Loop through products in your Frontpage collection.
     This collection is created by default, but you must add products to it.

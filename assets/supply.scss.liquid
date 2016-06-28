@@ -237,6 +237,32 @@ footer{
     }
 }
 
+//Homepage
+.product-homepage{
+    position: relative;
+    display: block;
+    cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/open.svg?14777880629565774662), auto;
+    -webkit-transition: ease-out, all 0.3s; /* Safari 3.1 to 6.0 */
+    transition: ease-out, all 0.3s;
+
+    &:hover{
+        opacity: 0.95;
+        p{
+            opacity: 1;
+        }
+    }
+    p{
+        -webkit-transition: ease-out, all 0.3s; /* Safari 3.1 to 6.0 */
+        transition: ease-out, all 0.3s;
+        position: absolute;
+        width: 100%;
+        bottom:-5px;
+        left: 0px;
+        text-align: center;
+        opacity: 0;
+    }
+}
+
 // VIDEO
 #video{
     -webkit-transition: ease-out, all 1s; /* Safari 3.1 to 6.0 */
@@ -246,6 +272,7 @@ footer{
     left: 0;
     right: 0;
     top: 0;
+    bottom: 0;
     cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg), auto;
     background-color: rgba(0, 0, 0, 0.5);
     // position: absolute;
@@ -258,7 +285,6 @@ footer{
     @media (min-width: 48em) {
         padding: 50px 100px;
     }
-
     // Large devices (desktops, 62em and up)
     @media (min-width: 62em) {
         padding: 100px 200px;
@@ -281,36 +307,43 @@ footer{
 }
 
 //Packery
-.grid-item { width: 25%; }
-.grid-item--width2 { width: 50%; }
+.grid{
+    opacity: 0;
+    -webkit-transition: ease-out, all 3s; /* Safari 3.1 to 6.0 */
+    transition: ease-out, all 3s;
+    min-height: 100%;
+    &.loaded{
+        opacity: 1;
+    }
+}
+/* fluid 4 columns, 4% gutter */
+.grid-sizer,
+.grid-item {
+    width: 50%;
 
-// .grid-item {
-//     width: 50%;
-//     @media (min-width: 34em) {
-//         padding: 50%
-//     }
-//     // Medium devices (tablets, 48em and up)
-//     @media (min-width: 48em) {
-//         padding: 25%
-//     }
-//
-//     // Large devices (desktops, 62em and up)
-//     @media (min-width: 62em) {
-//         width: 20%;
-//     }
-// }
-// .grid-item--width2 {
-//     width: 50%;
-//     @media (min-width: 34em) {
-//         padding: 100%
-//     }
-//     // Medium devices (tablets, 48em and up)
-//     @media (min-width: 48em) {
-//         padding: 50%
-//     }
-//
-//     // Large devices (desktops, 62em and up)
-//     @media (min-width: 62em) {
-//         width: 40%;
-//     }
-// }
+    @media (min-width: 34em) {
+        width: 50%
+    }
+    @media (min-width: 48em) {
+        width: 33%
+    }
+    @media (min-width: 62em) {
+        width: 25%;
+    }
+ }
+
+.gutter-sizer { width: 0%; }
+
+/* 2 columns wide */
+.grid-item--width2 {
+    width: 100%;
+    @media (min-width: 34em) {
+        width: 100%
+    }
+    @media (min-width: 48em) {
+        width: 66%
+    }
+    @media (min-width: 62em) {
+        width: 50%;
+    }
+}
