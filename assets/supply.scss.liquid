@@ -239,7 +239,13 @@ footer{
 
 // VIDEO
 #video{
-
+    -webkit-transition: ease-out, all 1s; /* Safari 3.1 to 6.0 */
+    transition: ease-out, all 1s;
+    position: absolute;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    top: 0;
     cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg), auto;
     background-color: rgba(0, 0, 0, 0.5);
     // position: absolute;
@@ -259,22 +265,52 @@ footer{
     }
     .embed-responsive-16by9{
         cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/play.svg), auto;
-    }
-
-    video{
-        -webkit-transition-delay: 2ms;
-        -moz-transition-delay: 2ms;
-        -o-transition-delay: 2ms;
-        transition-delay: 2ms;
+        -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.75);
+        background-color: #333;
     }
 }
 
 .transitionOffScreen{
-    -webkit-transition: ease-in-out, all .5s ease-in-out; /* Safari 3.1 to 6.0 */
-    transition: ease-in-out, all .5s ease-in-out;
     transform: translate(0px, -100%);
     -webkit-transform: translate(0px, -100%);
     -moz-transform: translate(0px, -100%);
     -o-transform: translate(0px, -100%);
     -ms-transform: translate(0px, -100%);
 }
+
+//Packery
+.grid-item { width: 25%; }
+.grid-item--width2 { width: 50%; }
+
+// .grid-item {
+//     width: 50%;
+//     @media (min-width: 34em) {
+//         padding: 50%
+//     }
+//     // Medium devices (tablets, 48em and up)
+//     @media (min-width: 48em) {
+//         padding: 25%
+//     }
+//
+//     // Large devices (desktops, 62em and up)
+//     @media (min-width: 62em) {
+//         width: 20%;
+//     }
+// }
+// .grid-item--width2 {
+//     width: 50%;
+//     @media (min-width: 34em) {
+//         padding: 100%
+//     }
+//     // Medium devices (tablets, 48em and up)
+//     @media (min-width: 48em) {
+//         padding: 50%
+//     }
+//
+//     // Large devices (desktops, 62em and up)
+//     @media (min-width: 62em) {
+//         width: 40%;
+//     }
+// }
