@@ -1,0 +1,21 @@
+{{ page.content }}
+
+
+<script>
+
+$(document).ready(function() {
+
+  // init Packery
+  var $grid = $('#supplier-assets').packery({
+    gutter: 10
+  });
+  // layout Packery after each image loads
+  $grid.imagesLoaded(function() {
+    $grid.packery();
+    $('.grid').addClass('loaded');
+  });
+
+
+})
+
+</script>

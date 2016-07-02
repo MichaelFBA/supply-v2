@@ -22,12 +22,14 @@ $(document).ready(function() {
     }
   })
 
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > 1) {
-      $('#video').addClass('transitionOffScreen')
-      video[0].pause()
-    }
-  });
+  if ($('body').hasClass('template-index')) {
+    $(window).scroll(function() {
+      if ($(this).scrollTop() > 1) {
+        $('#video').addClass('transitionOffScreen')
+        video[0].pause()
+      }
+    });
+  }
 
   // init Packery
   var $grid = $('.grid').packery({

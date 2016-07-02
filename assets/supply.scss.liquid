@@ -5,6 +5,12 @@ html, body{
 }
 body{background-color: transparent;}
 
+a{
+    &.underline{
+        text-decoration: underline;
+    }
+}
+
 //color
 .white-bg{background-color:#fff; }
 .text-white{color: #ffffff;}
@@ -30,6 +36,20 @@ body{background-color: transparent;}
 
 //Card
 .card, .card-img-top{border-radius: 0;}
+.card-footer, .card-header {
+    background-color: #ffffff;
+    padding: 1.25rem 1.25rem;
+
+    .supplier-header{
+        color: #9B9B9B;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .supplier-location{
+        float: right;
+        font-size: 0.8em;
+    }
+}
 
 //Columns
 .two-column-to-one{
@@ -61,6 +81,12 @@ p{
 
 //Nav
 .site-header{z-index: 10;}
+#supply-nav{
+    li{
+        font-weight: 600;
+        color: #333;
+    }
+}
 
 //Footer
 footer{
@@ -136,6 +162,28 @@ footer{
 .ball-form-button{
     &:hover{
         border: none !important;
+    }
+}
+
+#supplier{
+    h1{
+        text-align: center;
+        color: white;
+        font-size: 2em;
+        small{
+            display: block;
+            font-size: 50%;
+        }
+        @media (min-width: 34em) {
+            font-size: 3em;
+        }
+        @media (min-width: 48em) {
+            font-size: 4em;
+        }
+        @media (min-width: 62em) {
+            font-size: 5em;
+        }
+
     }
 }
 

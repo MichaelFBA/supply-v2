@@ -185,9 +185,18 @@
                 - Documentation:  http://shopify.com/timber#ajax-cart
             {% endcomment %}
             <div>
-              <a href="/cart" class="site-header__cart-toggle js-drawer-open-right no-hover" aria-controls="CartDrawer" aria-expanded="false">
-                <i class="fa fa-shopping-bag fa-2x"></i>
-              </a>
+                <ul id="supply-nav" class="list-inline">
+                    {% for link in linklists.main-menu.links %}
+                        <li class="list-inline-item">
+                            <a class="block" href="{{ link.url }}" target="_parent">{{ link.title }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="list-inline-item">
+                        <a href="/cart" class="site-header__cart-toggle js-drawer-open-right no-hover" aria-controls="CartDrawer" aria-expanded="false">
+                          <i class="fa fa-shopping-basket"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
             {% comment %}

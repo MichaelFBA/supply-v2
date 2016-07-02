@@ -3,19 +3,19 @@
         <div class="col-xs-5 col-xs-offset-1 col-sm-2">
             <h6 class="m-b-md">SECTIONS</h6>
 
-            <a class="block" href="/pages/about-us">About</a>
-            <a class="block" href="/pages/impressum">Impressum / Contact</a>
-            <a class="block" href="/pages/returns">Returns</a>
-            <a class="block" href="/pages/terms">Terms</a>
+            {% for link in linklists.section.links %}
+                  <a class="block" href="{{ link.url }}">{{ link.title }}</a>
+            {% endfor %}
+
         </div>
         <div class="col-xs-5 col-sm-2">
             <h6 class="m-b-md">FOLLOW</h6>
 
             <a class="block" data-toggle="modal" data-target="#subscribeModal">Subscribe to our newsletter</a>
-            <a class="block" target="_blank" href="https://www.facebook.com/trysupply">Facebook</a>
-            <a class="block" target="_blank" href="https://instagram.com/trysupply/">Instagram</a>
-            <a class="block" target="_blank" href="https://www.pinterest.com/trysupply/">Pinterest</a>
-            <a class="block" target="_blank" href="https://twitter.com/TrySupply">Twitter</a>
+            {% for link in linklists.follow.links %}
+                  <a class="block" href="{{ link.url }}" target="_blank">{{ link.title }}</a>
+            {% endfor %}
+
         </div>
         <div class="col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-4">
             <h6 class="m-b-md">WHAT WE BELIEVE</h6>
