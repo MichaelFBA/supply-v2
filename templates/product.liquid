@@ -36,13 +36,13 @@
                 </div>
 
                 {% comment %} Product Images {% endcomment %}
-                {% for image in product.images %}
-                    <div class="uiCircle productImage cover" data-img="{{ image.src | img_url: '2048x2048' }}" style="background-image:url({{ image.src | img_url: 'compact' }})"></div>
-                {% endfor %}
+                {% include 'related-products' %}
 
                 {% comment %} Product options {% endcomment %}
                 {% for option in product.options %}
-                    <div class="uiCircle" data-toggle="modal" data-target="#{{option}}Modal"><h4 class="vAlign text-center">{{option}}</h4></div>
+                    {% if option != 'Title' %}
+                        <div class="uiCircle" data-toggle="modal" data-target="#{{option}}Modal"><h4 class="vAlign text-center">{{option}}</h4></div>
+                    {% endif %}
                 {% endfor %}
 
                 {% comment %} Product Info {% endcomment %}
@@ -101,16 +101,17 @@
       {% endif %}
       {% endcomment %}
 </div>
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            {% for image in product.images %}
+                <img class="product-images" data-img="{{ image.src | img_url: '2048x2048' }}" src="{{ image.src | img_url: 'large' }}"/>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-<!-- Tags -->
-{% for tag in product.tags %}
-    {% include tag %}
-{% endfor %}
 
-<div class="row h100">
-    {% assign grid_item_width = 'col-xs-12 col-sm-6 p-a-0 h100' %}
-    {% include 'related-products' %}
-</div>
 
 {% include 'about-small' %}
 
@@ -148,11 +149,12 @@
         });
 
         var product = {{ product | json }};
+        console.log(product)
 
         // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
         {% if product.options.size == 1 and product.options.first != 'Title' %}
             $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}</label>');
-            {% endif %}
+        {% endif %}
 
         // Hide selectors if we only have 1 variant and its title contains 'Default'.
         {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
@@ -170,16 +172,29 @@
         }
     });
 
+    //Product images
+    var $body = $('body');
+    var $highlightedProduct = $body.find('#product-image-overlay');
+    $('.product-images').on('click', function(){
+        var largeImageUrl = $(this).data('img');
+        $body.addClass('featured')
+        $highlightedProduct.append('<img src="'+ largeImageUrl +'" />')
+    })
+    $highlightedProduct.on('click', function(){
+        $(this).empty()
+        $body.removeClass('featured')
+    })
+
     //Product Balls
     $(document).ready(function(){
         //set first image
         var product = {{ product | json }};
-        $('#MainProduct').backstretch(product.images[0], { fade: 1000 });
+        $('#AddToCartForm').backstretch(product.images[0]);
 
         //Product Images
         $('.productImage').on('click', function(){
-            var imgUrl = $(this).data('img');
-            $('#MainProduct').backstretch(imgUrl, { fade: 1000 });
+            var productUrl = $(this).data('href');
+            window.location.href = productUrl;
         })
 
         //Create Interactive
@@ -295,8 +310,6 @@
         // Move nodes toward cluster focus.
         function gravity(alpha) {
             return function(d) {
-                //d.y += (d.cy - d.y) * alpha;
-                //d.x += (d.cx - d.x) * alpha;
                 d.y += (root.y - d.y) * alpha;
                 d.x += (root.x - d.x) * alpha;
             };

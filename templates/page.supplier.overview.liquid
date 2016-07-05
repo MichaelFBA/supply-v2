@@ -1,0 +1,83 @@
+{{ 'leaflet.js' | asset_url | script_tag }}
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+
+<div id="mapid" style="height: 500px"></div>
+
+<section class="container m-t">
+    <div class="row">
+        <div class="col-xs-12 p-y-lg">
+            <h1 class="text-center">{{page.title}}</h1>
+            <hr class="divider" style="margin: 20px auto" />
+            {{ page.content }}
+        </div>
+        <div class="col-xs-12">
+            <div class="card-columns">
+                {% for link in linklists.suppliers.links %}
+                      <div class="card">
+                          {% if pages[link.handle].metafields.c_f.feature_image %}
+                            <img class="card-img-top" src="{{ pages[link.handle].metafields.c_f.feature_image }}" alt="{{ pages[link.handle].title }}">
+                          {% endif %}
+                          <div class="card-block">
+                              <h4 class="card-title">{{ pages[link.handle].title }}</h4>
+                              <p class="card-text">
+                                  {% if pages[link.handle].metafields.c_f.page_snippet %}
+                                     {{ pages[link.handle].metafields.c_f.page_snippet }}
+                                  {% endif %}
+                              </p>
+                              <footer>
+                                  <small class="text-muted">
+                                      Read more about
+                                      <cite title="{{ pages[link.handle].title }}"><a href="{{ link.url }}" target="_parent">{{ pages[link.handle].title }}</a></cite>
+                                  </small>
+                              </footer>
+                          </div>
+                      </div>
+                {% endfor %}
+            <div>
+        </div>
+    </div>
+</section>
+
+<script>
+var control =  L.control.zoom({position: 'bottomright'})
+var layer = new L.StamenTileLayer("toner-lite");
+var mymap = new L.Map("mapid", {
+        center: new L.LatLng(53.1, 10.5),
+        zoom: 6,
+        zoomControl: false,
+    })
+mymap.addLayer(layer);
+control.addTo(mymap)
+
+var myIcon = L.icon({
+    iconUrl: "{{ 'marker-icon.png' | asset_url }}",
+    iconRetinaUrl: "{{ 'marker-icon-2x.png' | asset_url }}",
+    iconSize: [25, 41],
+    iconAnchor: [48, 41],
+    popupAnchor: [-35, -38],
+    shadowUrl: "{{ 'marker-shadow.png' | asset_url }}",
+    shadowRetinaUrl: "{{ 'marker-shadow.png' | asset_url }}",
+    shadowSize: [41, 41],
+    shadowAnchor: [52, 41]
+});
+
+$(document).ready(function(){
+    var supplierContents = '';
+    var supplierLocations = '';
+    {% if settings.suppliers_content != blank %}
+      supplierContents = "{{ settings.suppliers_content }}";
+    {% endif %}
+    {% if settings.suppliers_location != blank %}
+      suppliers_location = "{{ settings.suppliers_location }}";
+    {% endif %}
+
+    var supplierContentArray = supplierContents.split(';')
+    var supplierLocArray = suppliers_location.split(';');
+
+    supplierContentArray.each(function(supplier, index){
+        var loc = supplierLocArray[index].split(',');
+        L.marker( [parseFloat(loc[0]), parseFloat(loc[1]) ], {icon: myIcon}).addTo(mymap).bindPopup(supplier);
+    })
+})
+
+</script>

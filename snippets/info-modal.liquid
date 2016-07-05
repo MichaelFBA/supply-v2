@@ -1,15 +1,17 @@
 <!-- Modal -->
-<div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="infoLabel">
-  <div class="modal-dialog modal-sm" role="document">
+<div class="modal" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="infoLabel">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{product.title}}</h4>
+      </div>
       <div class="modal-body dark-bg">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <div class="container-fluid">
-              <div class="row">
-                  <div class="col-xs-12">
-                      <h1 class="fw800 tight">{{product.title}}</h1>
-                      <span itemprop="description">{{product.description}}</span>
-                  </div>
+          <div class="row">
+              <div class="col-xs-12">
+                  <span itemprop="description">{{product.description}}</span>
               </div>
           </div>
       </div>

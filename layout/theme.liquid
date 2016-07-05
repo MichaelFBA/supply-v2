@@ -32,6 +32,7 @@
   {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
   {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
   {{ 'supply.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'leaflet.css' | asset_url | stylesheet_tag }}
 
 
   <!-- Header hook for plugins ================================================== -->
@@ -54,7 +55,7 @@
   Add the page template as a class for easy page or template specific styling.
 {% endcomment %}
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
-
+ {% include 'product-image-overlay' %}
  {% include 'modal-subscribe' %}
   <div id="NavDrawer" class="drawer drawer--left">
     <div class="drawer__header">
@@ -141,7 +142,7 @@
   </div>
   <div id="CartDrawer" class="drawer drawer--right">
     <div class="drawer__header">
-      <h1 class="fw800 display-4 m-b-0">{{ 'cart.general.title' | t }}</h1>
+      <h2 class="m-b-0 m-t">{{ 'cart.general.title' | t }}</h2>
       <div class="drawer__close js-drawer-close">
         <button type="button" class="icon-fallback-text no-outline">
           <span class="icon icon-x" aria-hidden="true"></span>
@@ -293,7 +294,7 @@
                 scale: {
                     simulate: 'spring',
                     start: 0,
-                    to: 1.7,
+                    to: 1.2,
                     spring: 600,
                     stopSpeed: 0,
                     friction: .3

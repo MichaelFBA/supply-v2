@@ -11,6 +11,9 @@ a{
     }
 }
 
+::-moz-selection { background: #00f3bd; }
+::selection { background: #00f3bd; }
+
 //color
 .white-bg{background-color:#fff; }
 .text-white{color: #ffffff;}
@@ -75,6 +78,10 @@ p{
     margin: 0 0 8px 0;
 }
 
+h1, h2, h3, h4, h5, h6{
+    font-weight: 600;
+}
+
 .display-4 {
     font-size: 2.8rem;
 }
@@ -86,6 +93,26 @@ p{
         font-weight: 600;
         color: #333;
     }
+}
+
+// Modal
+.modal-header{
+    color: #9B9B9B;
+    font-weight: 600;
+    text-transform: uppercase;
+    .modal-title{
+        font-size: 1em;
+    }
+
+}
+.modal-content {
+    border-radius: 0;
+}
+.modal{
+    cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg), auto;
+}
+.modal-dialog{
+    cursor: auto;
 }
 
 //Footer
@@ -187,6 +214,11 @@ footer{
     }
 }
 
+// About
+.play-button-hover{
+    cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/play.svg), auto;
+}
+
 // Components
 .divider{
     position: relative;
@@ -243,6 +275,26 @@ footer{
 }
 
 //Product
+body.featured{
+    overflow: hidden;
+    #product-image-overlay{
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom:0px;
+        right:0px;
+        background-color: #ffffff;
+        overflow-y: scroll;
+        z-index: 2000;
+
+        img{
+            width: 100%;
+            cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg?14777880629565774662), auto;
+        }
+    }
+}
+
+
 .js-qty, .selector-wrapper{display: none;}
 .uiCircle{
     border-radius:50%;
@@ -255,7 +307,17 @@ footer{
     margin-top: -27.5px;
     cursor: pointer;
     font-size: 0.7em;
-    @media (min-width: 48em) { margin-left: -37.5px; margin-top: -37.5px; width: 75px; height:75px; font-size: 1em; }
+    @media (min-width: 48em) {
+        margin-left: -37.5px;
+        margin-top: -37.5px;
+        width: 75px;
+        height:75px;
+        font-size: 1em;
+
+        h4{
+            font-size: 1em;
+        }
+    }
 
     &.productName{
         width: 100px;
@@ -264,10 +326,14 @@ footer{
         margin-top: -50px;
         text-align: center;
         cursor: move !important;
-        // cursor: url(http://wiki.ooo4kids.org/images/b/b3/Cursor-Hand.svg), auto;
-        @media (min-width: 48em) { margin-left: -62.5px; margin-top: -62.5px; width: 125px; height:125px; }
+        @media (min-width: 48em) {
+            margin-left: -62.5px;
+            margin-top: -62.5px;
+            width: 125px;
+            height:125px;
+        }
         h1{
-            font-size: 1.25em;
+            font-size: 1em;
         }
     }
     &.productPrice{
@@ -276,7 +342,12 @@ footer{
         margin-left: -50px;
         margin-top: -50px;
         text-align: center;
-        @media (min-width: 48em) { margin-left: -62.5px; margin-top: -62.5px; width: 125px; height:125px; }
+        @media (min-width: 48em) {
+            margin-left: -62.5px;
+            margin-top: -62.5px;
+            width: 125px;
+            height:125px;
+        }
         background-color: #00f3bd;
         color: #ffffff;
     }
