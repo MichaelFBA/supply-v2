@@ -1,0 +1,40 @@
+<!-- Modal -->
+<div class="modal" id="SupplierModal" tabindex="-1" role="dialog" aria-labelledby="supplierLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Suppliers | Our People</h4>
+            </div>
+            <div class="modal-body dark-bg p-a-0">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {% for tag in product.tags %}
+                            <div class="card">
+                                {% if pages[tag].metafields.c_f.feature_image %}
+                                  <img class="card-img-top" src="{{ pages[tag].metafields.c_f.feature_image }}" alt="{{ pages[tag].title }}">
+                                {% endif %}
+                                <div class="card-block">
+                                    <h4 class="card-title">{{ pages[tag].title }}</h4>
+                                    <p class="card-text">
+                                        {% if pages[tag].metafields.c_f.page_snippet %}
+                                           {{ pages[tag].metafields.c_f.page_snippet }}
+                                        {% endif %}
+                                    </p>
+                                    <footer>
+                                        <small class="text-muted">
+                                            Read more about
+                                            <cite title="{{ pages[tag].title }}"><a href="{{ pages[tag].url }}" target="_blank">{{ pages[tag].title }}</a></cite>
+                                        </small>
+                                    </footer>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

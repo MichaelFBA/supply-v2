@@ -3,13 +3,20 @@
 
 <div id="mapid" style="height: 500px"></div>
 
-<section class="container m-t">
+<section class="container-fluid white-bg m-y">
     <div class="row">
-        <div class="col-xs-12 p-y-lg">
-            <h1 class="text-center">{{page.title}}</h1>
-            <hr class="divider" style="margin: 20px auto" />
-            {{ page.content }}
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 p-y-lg">
+                    {{ page.metafields.c_f.page_snippet }}
+                </div>
+            </div>
         </div>
+    </div>
+</section>
+
+<section class="container-fluid">
+    <div class="row">
         <div class="col-xs-12">
             <div class="card-columns">
                 {% for link in linklists.suppliers.links %}
@@ -33,6 +40,14 @@
                           </div>
                       </div>
                 {% endfor %}
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">Do it clean - why eco-tanning matters.</h4>
+                        <p class="card-text">
+                            {{ page.content }}
+                        </p>
+                    </div>
+                </div>
             <div>
         </div>
     </div>
@@ -45,6 +60,7 @@ var mymap = new L.Map("mapid", {
         center: new L.LatLng(53.1, 10.5),
         zoom: 6,
         zoomControl: false,
+        scrollWheelZoom: false,
     })
 mymap.addLayer(layer);
 control.addTo(mymap)
@@ -62,22 +78,11 @@ var myIcon = L.icon({
 });
 
 $(document).ready(function(){
-    var supplierContents = '';
-    var supplierLocations = '';
-    {% if settings.suppliers_content != blank %}
-      supplierContents = "{{ settings.suppliers_content }}";
-    {% endif %}
-    {% if settings.suppliers_location != blank %}
-      suppliers_location = "{{ settings.suppliers_location }}";
-    {% endif %}
-
-    var supplierContentArray = supplierContents.split(';')
-    var supplierLocArray = suppliers_location.split(';');
-
-    supplierContentArray.each(function(supplier, index){
-        var loc = supplierLocArray[index].split(',');
-        L.marker( [parseFloat(loc[0]), parseFloat(loc[1]) ], {icon: myIcon}).addTo(mymap).bindPopup(supplier);
-    })
+    {% for link in linklists.suppliers.links %}
+        {% if pages[link.handle].metafields.c_f.latitude and pages[link.handle].metafields.c_f.longitude  %}
+            L.marker( [{{ pages[link.handle].metafields.c_f.latitude }}, {{ pages[link.handle].metafields.c_f.longitude }}], {icon: myIcon}).addTo(mymap).bindPopup('{{ pages[link.handle].title }}');
+        {% endif %}
+    {% endfor %}
 })
 
 </script>

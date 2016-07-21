@@ -21,7 +21,7 @@
         <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
         {% comment %}  ID addToCartForm is a selector for the ajax cart plugin {% endcomment %}
-        <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+        <form action="/cart/add" method="post" class="h100" enctype="multipart/form-data" id="AddToCartForm" style="background: url({{ product.metafields.c_f.feature_image }}) no-repeat; ">
 
             <section id="MainProduct" class="h100">
                 {% comment %} Product Name {% endcomment %}
@@ -29,7 +29,7 @@
 
                 {% comment %} Product Price {% endcomment %}
                 <div class="uiCircle productPrice">
-                    <h2 id="ProductPrice" itemprop="price" class="vAlign">{{ current_variant.price | money }}</h2>
+                    <h4 id="ProductPrice" itemprop="price" class="vAlign">{{ current_variant.price | money }}</h4>
                     {% if product.compare_at_price_max > product.price %}
                         <p id="ComparePrice"><em>{{ 'products.product.compare_at' | t }} {{ current_variant.compare_at_price | money }}</p>
                     {% endif %}
@@ -47,6 +47,9 @@
 
                 {% comment %} Product Info {% endcomment %}
                 <div class="uiCircle" data-toggle="modal" data-target="#InfoModal"><h4 class="vAlign text-center">Info</h4></div>
+
+                {% comment %} Suppliers {% endcomment %}
+                <div class="uiCircle" data-toggle="modal" data-target="#SupplierModal"><h4 class="vAlign text-center">Suppliers</h4></div>
 
                 {% comment %} Product Add to Cart {% endcomment %}
                 <button type="submit" name="add" id="AddToCart" class="uiCircle btn--secondary p-a-0 no-outline"><h4 id="AddToCartText" class="tight m-b-0 text-center">{{ 'products.product.add_to_cart' | t }}</h4></button>
@@ -101,13 +104,13 @@
       {% endif %}
       {% endcomment %}
 </div>
-<section class="container-fluid">
+<section class="container-fluid m-y">
     <div class="row">
-        <div class="col-xs-12">
-            {% for image in product.images %}
-                <img class="product-images" data-img="{{ image.src | img_url: '2048x2048' }}" src="{{ image.src | img_url: 'large' }}"/>
-            {% endfor %}
-        </div>
+        {% for image in product.images %}
+            <div class="col-xs-6 col-sm-3 p-a-0">
+                <img class="product-images img-responsive" data-img="{{ image.src | img_url: '2048x2048', format: 'pjpg' }}" src="{{ image.src | img_url: '1024x1024' }}"/>
+            </div>
+        {% endfor %}
     </div>
 </section>
 
@@ -177,19 +180,24 @@
     var $highlightedProduct = $body.find('#product-image-overlay');
     $('.product-images').on('click', function(){
         var largeImageUrl = $(this).data('img');
+        var smallImageUrl = $(this).attr('src');
         $body.addClass('featured')
+        $highlightedProduct.append('<img class="blurred-image" src="'+ smallImageUrl +'" />')
         $highlightedProduct.append('<img src="'+ largeImageUrl +'" />')
+        $highlightedProduct.imagesLoaded()
+            .done( function( instance ) {
+                $highlightedProduct.find('.blurred-image').remove();
+            })
     })
     $highlightedProduct.on('click', function(){
         $(this).empty()
         $body.removeClass('featured')
-    })
+    });
 
     //Product Balls
     $(document).ready(function(){
         //set first image
         var product = {{ product | json }};
-        $('#AddToCartForm').backstretch(product.images[0]);
 
         //Product Images
         $('.productImage').on('click', function(){
@@ -211,10 +219,7 @@
 
         });
         function doneResizing(){
-            var currentImage = $('.backstretch img').attr('src');
-            $('#MainProduct').backstretch('destroy');
             $( "#MainProduct" ).children().not( ".uiCircle" ).remove();
-            $('#MainProduct').backstretch(currentImage);
             createProductInteraction();
         }
     })

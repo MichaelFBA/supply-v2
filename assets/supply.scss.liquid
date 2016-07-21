@@ -1,3 +1,7 @@
+$bgColour: #f2f2f2;
+html{
+    background-color: $bgColour;
+}
 html, body{
     height: 100%;
     padding: 0;
@@ -30,6 +34,9 @@ a{
 .tight{line-height: 1em;}
 .page-top-padding{padding-top: 120px;}
 .pt5{padding-top: 5px;}
+.m-b,.m-y {
+    margin-bottom: 2rem!important;
+}
 
 .vAlign {
   position: relative;
@@ -130,6 +137,10 @@ footer{
     width: 90px;
     height:130px;
     position: absolute;
+    transform: scale(0.7);
+    @media (min-width: 48em) {
+        transform: scale(1);
+    }
 }
 .dot{
     border-radius: 50%;
@@ -283,7 +294,7 @@ body.featured{
         left: 0px;
         bottom:0px;
         right:0px;
-        background-color: #ffffff;
+        background-color: $bgColour;
         overflow-y: scroll;
         z-index: 2000;
 
@@ -291,7 +302,28 @@ body.featured{
             width: 100%;
             cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/close.svg?14777880629565774662), auto;
         }
+
+        .blurred-image{
+            -webkit-filter: blur(25px);
+        }
     }
+}
+
+#AddToCartForm{
+    height: 100%;
+    background-size: contain !important;
+    background-position: center center !important;
+}
+
+#SupplierModal{
+
+    .card{
+        border:none;
+    }
+}
+
+.product-images{
+    cursor: url(https://cdn.shopify.com/s/files/1/1073/8830/files/open.svg?14777880629565774662), auto;
 }
 
 
@@ -306,22 +338,23 @@ body.featured{
     margin-left: -27.5px;
     margin-top: -27.5px;
     cursor: pointer;
-    font-size: 0.7em;
+    h4{
+        font-size: 0.7em;
+        @media (min-width: 48em) {
+            font-size: 1em;
+        }
+    }
+
     @media (min-width: 48em) {
         margin-left: -37.5px;
         margin-top: -37.5px;
         width: 75px;
         height:75px;
-        font-size: 1em;
-
-        h4{
-            font-size: 1em;
-        }
     }
 
     &.productName{
-        width: 100px;
-        height:100px;
+        width: 85px;
+        height:85px;
         margin-left: -50px;
         margin-top: -50px;
         text-align: center;
@@ -332,27 +365,37 @@ body.featured{
             width: 125px;
             height:125px;
         }
+
         h1{
-            font-size: 1em;
+            font-size: 0.8em;
+            @media (min-width: 48em) {
+                font-size: 1em;
+            }
         }
     }
     &.productPrice{
-        width: 100px;
-        height:100px;
+        width: 85px;
+        height:85px;
         margin-left: -50px;
         margin-top: -50px;
         text-align: center;
+        background-color: #00f3bd;
+        color: #ffffff;
         @media (min-width: 48em) {
             margin-left: -62.5px;
             margin-top: -62.5px;
             width: 125px;
             height:125px;
         }
-        background-color: #00f3bd;
-        color: #ffffff;
+        h4{
+            font-size: 0.8em;
+            @media (min-width: 48em) {
+                font-size: 1.4em;
+            }
+        }
     }
     &.productImage{
-        background-color: whitesmoke;
+        background-color: $bgColour;
     }
 }
 

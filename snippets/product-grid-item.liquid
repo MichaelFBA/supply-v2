@@ -23,7 +23,11 @@ grid_item_width if no variable is set {% endcomment %}
     {% comment %} Link to your product with the 'within: collection' filter for the link to be aware of the collection. This allows you to create collection-based navigation on the product page. Results of using 'within: collection': - Instead of a URL with
     /products/product-handle you would get /collections/collection-handle/products/product-handle For more info on navigation within a collection - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection {% endcomment%}
     <a href="{{ product.url | within: collection }}" class="product-homepage">
-        <img src="{{ product.featured_image.src | img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}"/>
+        {% if product.metafields.c_f.feature_image %}
+            <img src="{{ product.metafields.c_f.feature_image }}" alt="{{ product.title }}">
+        {% else %}
+            <img src="{{ product.featured_image.src | img_url: '1024x1024' }}" alt="{{ product.featured_image.alt | escape }}"/>
+        {% endif %}
         <p>
             {{ product.title }}
             {% comment %} You can show a leading 'from' or 'up to' by checking 'product.price_varies' if your variants have different prices. {% endcomment %} {% if on_sale %} {% if product.price_varies %} {% assign sale_price = product.price | money %} {{ 'products.product.on_sale_from_html'
