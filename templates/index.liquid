@@ -1,4 +1,4 @@
-<div id="video" >
+<div id="video">
     <div class="video-wrap">
         <video poster="https://cdn.shopify.com/s/files/1/1073/8830/files/poster.jpg?16596465149826440614">
             <source src="https://cdn.shopify.com/s/files/1/1073/8830/files/SUPPLY_EDIT_v4.mp4?10105095783517067955" type="video/mp4">
@@ -51,6 +51,11 @@
 </div>
 
 <script>
+//Hide Video if cookie present
+if (document.cookie.split(";").indexOf(' seenVideo=1') !== -1){
+     document.getElementById('video').style.display = 'none';
+};
+
 $(document).ready(function() {
 
   //video
@@ -72,6 +77,7 @@ $(document).ready(function() {
     if ($(e.target).is('#video')) {
       $(this).addClass('transitionOffScreen')
       video[0].pause()
+      createCookie('seenVideo', 1, 7);
     }
   })
 
@@ -98,6 +104,18 @@ $(document).ready(function() {
     $grid.packery();
     $('.grid').addClass('loaded');
   });
+
+  function createCookie(name, value, days) {
+    var date, expires;
+    if (days) {
+        date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        expires = "; expires="+date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = name+"="+value+expires+"; path=/";
+}
 
 
 })

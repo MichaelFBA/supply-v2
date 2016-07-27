@@ -197,18 +197,53 @@
     ]
 },
 {
-  "name": "Supply Suppliers",
+  "name": "Supply About Slideshow",
   "settings": [
     {
       "type": "text",
-      "id": "suppliers_content",
-      "label": "Supplier Names"
+      "id": "suppliers_about_1",
+      "label": "Supplier Image 1"
     },
     {
       "type": "text",
-      "id": "suppliers_location",
-      "label": "Supplier lat long"
-    }
+      "id": "suppliers_about_2",
+      "label": "Supplier Image 2"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_3",
+      "label": "Supplier Image 3"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_4",
+      "label": "Supplier Image 4"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_5",
+      "label": "Supplier Image 5"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_6",
+      "label": "Supplier Image 6"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_7",
+      "label": "Supplier Image 7"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_8",
+      "label": "Supplier Image 8"
+    },
+    {
+      "type": "text",
+      "id": "suppliers_about_9",
+      "label": "Supplier Image 9"
+  }
   ]
 }
 ]

@@ -31,12 +31,7 @@
                                      {{ pages[link.handle].metafields.c_f.page_snippet }}
                                   {% endif %}
                               </p>
-                              <footer>
-                                  <small class="text-muted">
-                                      Read more about
-                                      <cite title="{{ pages[link.handle].title }}"><a href="{{ link.url }}" target="_parent">{{ pages[link.handle].title }}</a></cite>
-                                  </small>
-                              </footer>
+                              <a class="underline text-muted" title="{{ pages[link.handle].title }}" href="{{ link.url }}" target="_parent">Read more about {{ pages[link.handle].title }}</a>
                           </div>
                       </div>
                 {% endfor %}

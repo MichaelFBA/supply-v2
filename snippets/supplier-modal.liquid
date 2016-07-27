@@ -23,12 +23,7 @@
                                            {{ pages[tag].metafields.c_f.page_snippet }}
                                         {% endif %}
                                     </p>
-                                    <footer>
-                                        <small class="text-muted">
-                                            Read more about
-                                            <cite title="{{ pages[tag].title }}"><a href="{{ pages[tag].url }}" target="_blank">{{ pages[tag].title }}</a></cite>
-                                        </small>
-                                    </footer>
+                                    <a class="underline text-muted" title="{{ pages[tag].title }}" href="{{ pages[tag].url }}" target="_blank">Read more about {{ pages[tag].title }}</a>
                                 </div>
                             </div>
                         {% endfor %}

@@ -15,28 +15,78 @@
                 <div class="card">
                     <div class="card-block">
                         <h2>{{ page.title }}</h2>
-                        <div class="two-column-to-one">
                         {{ page.content }}
-                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-xs-12 col-md-4 m-t-md">
-
+            <div class="col-xs-12 col-md-4 m-t">
                 <div class="card">
-                    <img class="card-img-top" src="http://www.hialpesa.com/images/01.jpg" alt="Card image cap">
                     <div class="card-block">
                         <h4 class="card-title">Suppliers</h4>
-                        <p class="card-text">When you buy Supply our promise is that everything is responsible and sustainable. Whether it’s hi-tech producers with leading edge technologies or artisan craftsmen working in a tried and tested tradition, our partners are committed
-                            to fairness, responsibility, sustainability and progressive business practice. It’s what makes them the right us and, we hope, for you too.</p>
+                        <p class="card-text">When you buy Supply our promise is that everything is responsible and sustainable. Whether it’s hi-tech producers with leading edge technologies or artisan craftsmen working in a tried and tested tradition, our partners are committed to fairness, responsibility, sustainability and progressive business practice. It’s what makes them the right people for us and we hope for you too.</p>
                     </div>
                 </div>
-
             </div>
-
+        </div>
+    </div>
+    <div id="supplier-bg" class="row p-y-lg p-x-0 m-y-md cover" style="background-image: url('https://cdn.shopify.com/s/files/1/1073/8830/files/001.jpg?9291994724570579818')">
+        <div class="container p-y-lg">
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <div class="card">
+                        <div class="card-block">
+                            <h4 class="card-title">Our People</h4>
+                            <p>Our promise is that everything you buy from Supply is made responsibly and sustainably. </p>
+                            <p>Hi-tech producers with leading edge technologies or traditional artisans all our partners are committed to fairness and progressive business practice. </p>
+                            <p>It’s what makes them right for us… and, we hope, right for you.</p>
+                        </div>
+                        <ul class="list-group list-group-flush supplier-overflow" >
+                            {% for link in linklists.suppliers.links %}
+                            <li class="list-group-item">
+                                <a target="_parent" title="{{ pages[link.handle].title }}" href="{{ link.url }}">
+                                    {{ pages[link.handle].title }}
+                                    <i class="fa fa-angle-right pull-right" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 {% include 'social' %}
+
+
+<script>
+$(document).ready(function() {
+
+  //video
+  var isPlaying = false;
+  var video = $("video");
+
+  video.on('click', function() {
+    if (isPlaying) {
+      $(this)[0].pause()
+      isPlaying = false;
+    } else {
+      $(this)[0].play()
+      isPlaying = true;
+    }
+  });
+
+  //backstretch
+  var supplierImages = [];
+  {% for i in (1..9) %}
+    {% assign settingsimages = 'suppliers_about_%1' | replace:'%1', {{i}} %}
+      {% if settings[settingsimages] != blank %}
+        supplierImages.push('{{ settings[settingsimages] }}');
+      {% endif %}
+  {% endfor %}
+
+  $('#supplier-bg').backstretch(supplierImages, {duration: 5000, fade: 750});
+
+})
+</script>
