@@ -11,19 +11,11 @@
     </div>
     <div class="container">
         <div class="row">
-            <div id="about-header" class="col-xs-12 col-md-8">
+            <div id="about-header" class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="card">
                     <div class="card-block">
                         <h2>{{ page.title }}</h2>
                         {{ page.content }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-4 m-t">
-                <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">Suppliers</h4>
-                        <p class="card-text">When you buy Supply our promise is that everything is responsible and sustainable. Whether it’s hi-tech producers with leading edge technologies or artisan craftsmen working in a tried and tested tradition, our partners are committed to fairness, responsibility, sustainability and progressive business practice. It’s what makes them the right people for us and we hope for you too.</p>
                     </div>
                 </div>
             </div>
@@ -36,9 +28,8 @@
                     <div class="card">
                         <div class="card-block">
                             <h4 class="card-title">Our People</h4>
-                            <p>Our promise is that everything you buy from Supply is made responsibly and sustainably. </p>
-                            <p>Hi-tech producers with leading edge technologies or traditional artisans all our partners are committed to fairness and progressive business practice. </p>
-                            <p>It’s what makes them right for us… and, we hope, right for you.</p>
+                            <p>Our promise is that everything you buy from Supply is made good. Hi-tech producers, makers and believers – our partners are committed to fairness, quality and progressive business practice.</p>
+                            <p>It's what makes them right for us... and, we hope, right for you. <a href="/pages/suppliers" class="underline">Read more.</a></p>
                         </div>
                         <ul class="list-group list-group-flush supplier-overflow" >
                             {% for link in linklists.suppliers.links %}

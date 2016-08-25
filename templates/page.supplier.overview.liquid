@@ -19,6 +19,15 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="card-columns">
+                <div class="card">
+                    <img class="card-img-top" src="https://cdn.shopify.com/s/files/1/1073/8830/files/masure-website-02-a_ac2db849-d4a2-44b3-bff4-ce45c8444892.jpg?4138821627376782376" alt="Eco Tannery">
+                    <div class="card-block">
+                        <h4 class="card-title">Do it clean - why eco-tanning matters.</h4>
+                        <p class="card-text">
+                            {{ page.content }}
+                        </p>
+                    </div>
+                </div>
                 {% for link in linklists.suppliers.links %}
                       <div class="card">
                           {% if pages[link.handle].metafields.c_f.feature_image %}
@@ -37,10 +46,11 @@
                 {% endfor %}
                 <div class="card">
                     <div class="card-block">
-                        <h4 class="card-title">Do it clean - why eco-tanning matters.</h4>
-                        <p class="card-text">
-                            {{ page.content }}
-                        </p>
+                        <h4 class="card-title">Do it clean - why Nickel-free matters.</h4>
+                        <p class="card-text">Many everyday products use nickel-plated rivets, poppers, zippers and studs – even though the toxic effects of heavy metals are well known.</p>
+                        <p class="card-text">Nickel-plated metalwork is often produced in places where environmental laws are poorly enforced. Toxic waste gets dumped in landfill and rivers contaminating the water supply and the food chain.</p>
+                        <p class="card-text">We’re not pretending smelting metal is ever going to be eco-friendly. But we can make sure we minimise the impact. Using new technologies means fewer chemicals, less pollution and lower emissions.</p>
+                        <p class="card-text">So whatever you buy from Supply you can be sure it’s as free from the bad stuff as we can make it.</p>
                     </div>
                 </div>
             <div>

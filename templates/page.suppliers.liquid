@@ -1,9 +1,57 @@
-{{ page.content }}
+<div id="supplier" class="row h100">
+    <div class="col-xs-12 p-x-0 m-b-md h100 cover" style="background-image: url('{{ page.metafields.c_f.feature_image_lg }}');">
+        <div class="vAlign">
+            <h1>{{ page.title }}<small>{{ page.metafields.c_f.feature }}</small></h1>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    {{ page.title }}
+                    <span class="supplier-location">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        {{ page.metafields.c_f.location }}
+                    </span>
+                </div>
+                <div class="card-block supplier-information">
+                    <div class="hidden-sm-up">
+                        <span class="mobile-text">{{ page.metafields.c_f.page_snippet }}</span>
+                        <span class="expanded-text hide">{{ page.content }}</span>
+                        <a class="read-more underline" href="#">Read More</a>
+                    </div>
+                    <div class="hidden-xs-down">
+                        {{ page.content }}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="supplier-header">FOR MORE INFORMATION</span></div>
+                <div class="card-block">Find out <a class="underline" href="{{ page.metafields.c_f.url }}" target="_blank">more</a>.</div>
+            </div>
+        </div>
+        <div id="supplier-assets" class="col-xs-12 col-md-6 col-lg-8">
 
+        </div>
+    </div>
+</div>
 
 <script>
 
 $(document).ready(function() {
+
+    //Show read more
+    $('.read-more').on('click', function(e){
+        e.preventDefault();
+        $(this).hide();
+        $('.mobile-text').hide();
+        $('.expanded-text').removeClass('hide');
+    })
+
+    //Move All images and videos
+    $('.supplier-information img, .supplier-information iframe').addClass('supplier-item').remove().appendTo('#supplier-assets');
 
   // init Packery
   var $grid = $('#supplier-assets').packery({
@@ -14,6 +62,7 @@ $(document).ready(function() {
     $grid.packery();
     $('.grid').addClass('loaded');
   });
+
 
 
 })

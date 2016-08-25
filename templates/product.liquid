@@ -104,11 +104,11 @@
       {% endif %}
       {% endcomment %}
 </div>
-<section class="container-fluid m-y">
+<section class="container-fluid m-y product-image-container">
     <div class="row">
         {% for image in product.images %}
             <div class="col-xs-6 col-sm-3 p-a-0">
-                <img class="product-images img-responsive" data-img="{{ image.src | img_url: '2048x2048', format: 'pjpg' }}" src="{{ image.src | img_url: '1024x1024' }}"/>
+                <img class="product-images img-responsive" data-img="{{ image.src | img_url: '2048x2048', format: 'pjpg' }}" src="{{ image.src | img_url: '1024x1024' }}" alt="{{ product.title }}"/>
             </div>
         {% endfor %}
     </div>
